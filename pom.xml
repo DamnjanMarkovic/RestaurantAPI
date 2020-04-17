@@ -10,7 +10,9 @@
 		<relativePath/>
 	</parent>
 		<groupId>io.javabrains</groupId>
-		<artifactId>RestaurantAPI</artifactId>
+		<artifactId>spring-security-jwt</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<name>spring-security-jwt</name>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -90,7 +92,11 @@
 				<version>3.0.2</version>
 				<configuration>
 					<appName>RestaurantAPI</appName>
+					<processTypes>
+						<web>java $JAVA_OPTS -cp target/classes:target/dependency/* Main</web>
+					</processTypes>
 				</configuration>
+
 			</plugin>
 		</plugins>
 	</build>
