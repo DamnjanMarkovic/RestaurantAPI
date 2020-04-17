@@ -1,6 +1,0 @@
-web: java -jar target/dropwizard-demo-1.0.jar server main.java.restaurantIOS
-
-
-web: java -Dserver.port=$PORT -jar  jbot-example/target/jbot-example-4.1.1-SNAPSHOT.jar
-
-web: java -Dserver.port=$PORT -jar  RestaurantAPI/target/jbot-example-4.1.1-SNAPSHOT.jar

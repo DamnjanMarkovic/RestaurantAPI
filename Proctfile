@@ -1,1 +1,1 @@
-web: java -jar target/dropwizard-demo-1.0.jar server main.java.restaurantIOS
+web: java -cp target/classes:target/dependency/main/java/restaurantIOS
