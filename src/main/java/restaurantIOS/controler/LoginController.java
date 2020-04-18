@@ -35,7 +35,8 @@ public class LoginController {
     @RequestMapping("/")
     @ResponseBody
     String home() {
-        return "Prva strana";
+        return "Prva strana" + "\nLogin : Add credentials into Postman";
+
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
