@@ -82,6 +82,10 @@
             <version>19.0.0</version>
             <scope>compile</scope>
         </dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-jar-plugin</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -96,22 +100,6 @@
 						<web>java $JAVA_OPTS -cp target/classes:target/dependency/* Main</web>
 					</processTypes>
 				</configuration>
-
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifestFile>src/main/resources/custom/MANIFEST.ME</manifestFile>
-						<manifest>
-							<addCLasspath>true</addCLasspath>
-						</manifest>
-					</archive>
-
-
-				</configuration>
-
 			</plugin>
 		</plugins>
 	</build>

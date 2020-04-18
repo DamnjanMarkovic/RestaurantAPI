@@ -103,5 +103,6 @@
     <orderEntry type="library" name="Maven: jakarta.annotation:jakarta.annotation-api:2.0.0-RC1" level="project" />
     <orderEntry type="library" name="Maven: jakarta.transaction:jakarta.transaction-api:2.0.0-RC1" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:19.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.maven.plugins:maven-jar-plugin:unknown" level="project" />
   </component>
 </module>
