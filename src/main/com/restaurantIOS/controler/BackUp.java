@@ -2,6 +2,10 @@ package restaurantIOS.controler;
 
 public class BackUp {
     /*
+
+    java -cp app.jar com.somepackage.SomeClass
+
+
 spring.datasource.url=jdbc:mysql://localhost:3306/restaurantIOS?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC
 spring.datasource.username=root
 spring.datasource.password =Sql2020D!
