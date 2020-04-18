@@ -22,9 +22,9 @@ import java.util.stream.Collectors;
 //@RestController
 public class LoginController {
 
-    private AuthenticationManager authenticationManager;
-    private JwtUtil jwtTokenUtil;
-    private UserService myuserService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtTokenUtil;
+    private final UserService myuserService;
 
 
     public LoginController(AuthenticationManager authenticationManager, JwtUtil jwtTokenUtil, UserService myuserService) {
