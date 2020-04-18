@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar target/spring-security-jwt-0.0.1-SNAPSHOT.jar
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* src/main/com/restaurantIOS/Main.java
