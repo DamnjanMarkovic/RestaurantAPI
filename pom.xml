@@ -101,7 +101,7 @@
 								<manifest>
 									<addClasspath>true</addClasspath>
 									<classpathPrefix>lib/</classpathPrefix>
-									<mainClass>src/main/com/restaurantIOS/Main</mainClass>
+									<mainClass>restaurantIOS/Main</mainClass>
 								</manifest>
 							</archive>
 						</configuration>
