@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT target/classes:target/dependency/* Main
+web:java -Dserver.port=$PORT target/classes:target/dependency/* Main
