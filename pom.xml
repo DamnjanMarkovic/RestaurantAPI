@@ -82,15 +82,26 @@
             <version>19.0.0</version>
             <scope>compile</scope>
         </dependency>
-		<dependency>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-jar-plugin</artifactId>
-			<version>3.1.2</version>
-		</dependency>
+
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+						<!-- Build an executable JAR -->
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-jar-plugin</artifactId>
+						<version>3.1.2</version>
+						<configuration>
+							<archive>
+								<manifest>
+									<addClasspath>true</addClasspath>
+									<classpathPrefix>lib/</classpathPrefix>
+									<mainClass>src/main/com/restaurantIOS/Main</mainClass>
+								</manifest>
+							</archive>
+						</configuration>
+					</plugin>
 			<plugin>
 				<groupId>com.heroku.sdk</groupId>
 				<artifactId>heroku-maven-plugin</artifactId>
