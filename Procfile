@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar web-service/target/spring-security-jwt-0.0.1-SNAPSHOT.jar --server.port=$PORT
+web: java $JAVA_OPTS -jar target/spring-security-jwt-0.0.1-SNAPSHOT.jar --server.port=$PORT
