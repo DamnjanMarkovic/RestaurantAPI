@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar RestaurantAPI/src/main/java/restaurantIOS
+web: java $JAVA_OPTS -cp target/classes:target/dependency/* main.java.restaurantOS.Main
