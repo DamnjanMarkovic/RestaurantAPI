@@ -112,11 +112,11 @@
 							<appName>restaurant-ios</appName>
 							<includeTarget>false</includeTarget>
 							<includes>
-								<include>${basedir}/${full-artifact-name}</include>
+								<include>target/restaurant-ios-1.0.0-SNAPSHOT.jar</include>
 							</includes>
 							<jdkVersion>1.8</jdkVersion>
 							<processTypes>
-								<web>java $JAVA_OPTS -jar ${full-artifact-name} --spring.profiles.active=heroku</web>
+								<web>java -jar target/restaurant-ios-1.0.0-SNAPSHOT.jar --spring.profiles.active=heroku</web>
 							</processTypes>
 						</configuration>
 						<executions>
