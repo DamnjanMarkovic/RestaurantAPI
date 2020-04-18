@@ -45,6 +45,16 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.1.10.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:5.1.10.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:5.1.10.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars:jquery:3.3.1-1" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars:jquery-ui:1.12.1" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars:bootstrap:4.1.3" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars:popper.js:1.14.3" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars:webjars-locator:0.30" level="project" />
+    <orderEntry type="library" name="Maven: org.webjars:webjars-locator-core:0.35" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.28" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-compress:1.9" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.9.3" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.8.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-jpa:2.1.9.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-aop:2.1.9.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.9.4" level="project" />
@@ -70,7 +80,6 @@
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:2.1.11.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:5.1.10.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.1.10.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.28" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aspects:5.1.10.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-security:2.1.9.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:5.1.10.RELEASE" level="project" />
@@ -79,7 +88,6 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: mysql:mysql-connector-java:8.0.17" level="project" />
     <orderEntry type="library" name="Maven: org.projectlombok:lombok:1.18.10" level="project" />
     <orderEntry type="library" name="Maven: io.jsonwebtoken:jjwt:0.9.1" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.9.3" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.2" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.0" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.9.9" level="project" />
