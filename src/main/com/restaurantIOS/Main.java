@@ -9,6 +9,8 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableCaching
 @ComponentScan({"restaurantIOS"})
+
+
 public class Main {
 
 	public static void main(String[] args) {
