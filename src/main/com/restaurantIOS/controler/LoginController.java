@@ -35,7 +35,7 @@ public class LoginController {
     @RequestMapping("/")
     @ResponseBody
     String home() {
-        return "Hello World!";
+        return "Prva strana";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
