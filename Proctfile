@@ -1,1 +1,1 @@
-kdvjldksafjv clasjd
+web: java -Dserver.port=$PORT -jar RestaurantAPI/src/main/java/restaurantIOS
