@@ -1,1 +1,1 @@
-web:java -Dserver.port=$PORT target/classes:target/dependency/
+web:java -Dserver.port=8080 src/main/com/restaurantIOS/
