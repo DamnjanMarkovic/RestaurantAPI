@@ -6,6 +6,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import restaurantIOS.error.EntityNotFoundException;
 import restaurantIOS.models.dto.LoginRequest;
@@ -17,8 +18,8 @@ import restaurantIOS.util.JwtUtil;
 
 import javax.validation.Valid;
 import java.util.stream.Collectors;
-
-@RestController
+@Controller
+//@RestController
 public class LoginController {
 
     private AuthenticationManager authenticationManager;
@@ -31,13 +32,11 @@ public class LoginController {
         this.jwtTokenUtil = jwtTokenUtil;
         this.myuserService = myuserService;
     }
-
     @RequestMapping("/")
-    @ResponseBody
-    String home() {
-        return "Prva strana" + "\nLogin : Add credentials into Postman";
-
+    public String index() {
+        return "index";
     }
+
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody LoginRequest loginRequest) throws Exception {
