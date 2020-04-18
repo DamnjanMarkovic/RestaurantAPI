@@ -1,1 +1,1 @@
-web: java -jar target/restaurant-ios-1.0.0-SNAPSHOT.jar
+web: java -cp app.jar com.restaurantIOS.Main
