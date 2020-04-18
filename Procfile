@@ -1,1 +1,1 @@
-web:java -Dserver.port=8080 src/main/com/restaurantIOS/
+web:java port:8080 src/main/com/restaurantIOS/
