@@ -57,5 +57,12 @@ public class Restaurant_offerController {
 
     }
 
+    @GetMapping("/allAvailableOffers")
+    public List<AvailableOffers> getAllAvailableOffers(){
+
+        return restaurant_offerService.getAllAvailableOffers();
+
+    }
+
 }
 

@@ -14,6 +14,19 @@ public interface Restaurant_offerRepository extends JpaRepository<Restaurant_off
 
     @Query("SELECT o from Restaurant_offer o inner JOIN o.ingredients i inner join i.restaurant_offer_ingredients roi inner JOIN i.restaurants r inner" +
             " join r.available_ingredients z where r.id_restaurant =(:id_restaurant) group by o.id")
+    List<Restaurant_offer> getAvailableOffersInRestaurant (int id_restaurant);
+
+    @Query("SELECT o from Restaurant_offer o inner JOIN o.ingredients i inner join i.restaurant_offer_ingredients roi inner JOIN i.restaurants r inner" +
+            " join r.available_ingredients z group by o.id")
+    List<Restaurant_offer> getAllAvailableOffers();
+
+}
+
+
+
+
+
+
 /*
     @Query(
             value = "select restaurant_offer.id_restaurant_offer, restaurant_offer.restaurant_offer_name,restaurant_offer.restaurant_offer_price, " +
@@ -24,7 +37,3 @@ public interface Restaurant_offerRepository extends JpaRepository<Restaurant_off
                     "ingredients.id_ingredient INNER JOIN restaurants on restaurants.id_restaurant = avg.id_restaurant where avg.id_restaurant = ? and " +
                     "avg.quantityAvailable>restaurant_offer_ingredients.quantity",
             nativeQuery = true)*/
-    List<Restaurant_offer> getAvailableOffersInRestaurant (int id_restaurant);
-            //(@Param("id_restaurant") int id_restaurant);
-
-}

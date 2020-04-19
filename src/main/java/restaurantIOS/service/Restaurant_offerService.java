@@ -120,8 +120,6 @@ public class Restaurant_offerService {
                 availableOffers.add(availableOffersOne);
             }
         }
-
-
             return availableOffers;
 
     }
@@ -151,6 +149,41 @@ public class Restaurant_offerService {
             }
         }
         return value1;
+    }
+
+    public List<AvailableOffers> getAllAvailableOffers() {
+
+        List<Restaurant_offer> restOffs = restaurant_offerRepository.getAllAvailableOffers();
+            List<AvailableOffers> availableOffers = new ArrayList<>();
+            AvailableOffers availableOffersOne = null;
+            double quantity = 0;
+            for (Restaurant_offer offs : restOffs) {
+                Set<IngredientsInOffer> ingredientsInOffer = new HashSet<>();
+                for (Ingredients ingre : offs.getIngredients()) {
+                    IngredientsInOffer ingredientsInOffer1 = new IngredientsInOffer(ingre.getIngredient_name());
+                    for (Restaurant_offer_ingredients roi : ingre.getRestaurant_offer_ingredients()) {
+                        if (roi.getId_restaurant_offer() == offs.getId()) {
+                           quantity = roi.getQuantity();
+                            for (Restaurant rst : ingre.getRestaurants())
+                                      for (Available_ingredients avg : rst.getAvailable_ingredients()) {
+                                               if (avg.getId_ingredients() == ingre.getId_ingredient()) {
+                        ingredientsInOffer1 = new IngredientsInOffer(ingre.getIngredient_name(), ingre.getPurchase_price(), ingre.getQuantity_measure(),
+                                                            quantity, 0);
+                                        }
+                                }
+                        }
+                    }
+                    ingredientsInOffer.add(ingredientsInOffer1);
+                }
+                availableOffersOne = new AvailableOffers(offs.getId(), offs.getRestaurant_offer_name(),
+                        offs.getRestaurant_offer_price(), offs.getOffer_type(), offs.getImage(), ingredientsInOffer);
+
+                List<IngredientsInOffer> list = new ArrayList<IngredientsInOffer>(availableOffersOne.getIngredientsInOffer());
+
+                    availableOffers.add(availableOffersOne);
+            }
+            return availableOffers;
+
     }
 }
 
