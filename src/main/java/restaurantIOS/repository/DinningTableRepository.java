@@ -7,6 +7,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import restaurantIOS.models.DinningTable;
 
+import java.util.List;
+
 
 @Repository
 public interface DinningTableRepository extends JpaRepository<DinningTable,Integer> {
@@ -17,17 +19,9 @@ public interface DinningTableRepository extends JpaRepository<DinningTable,Integ
             (@Param("table_number") int table_number, @Param("id_restaurant") int id_restaurant);
 
 
-
-
-
-
-
-
-
-
-
-
-
+    @Query(value = "select order_offers.id_table FROM order_offers WHERE order_offers.id_bill is null and order_offers.id_restaurant = ?",
+            nativeQuery = true)
+    List<Integer> getOccupiedTables(Integer id_restaurant);
 }
 
 

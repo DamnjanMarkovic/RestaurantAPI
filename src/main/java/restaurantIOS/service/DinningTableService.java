@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import restaurantIOS.models.DinningTable;
 import restaurantIOS.repository.DinningTableRepository;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,7 +43,13 @@ public class DinningTableService {
             return dinningTableRepository.getSpecificDinningTable(table_number, id_restaurant);
     }
 
+    @Transactional
+    public List<DinningTable> getOccupiedTables(Integer id_restaurant) {
 
+        List<Integer> availableDiningTablesIDs = dinningTableRepository.getOccupiedTables(id_restaurant);
+        return dinningTableRepository.findAllById(availableDiningTablesIDs);
+
+    }
 }
 
 

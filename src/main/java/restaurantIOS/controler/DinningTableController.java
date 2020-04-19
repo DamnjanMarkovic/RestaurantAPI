@@ -31,6 +31,12 @@ public class DinningTableController {
         return dinningTableService.getDinningTable(id);
     }
 
+    @GetMapping("/getOccupiedTables/{id_restaurant}")
+    public List<DinningTable> getOccupiedTables(@PathVariable Integer id_restaurant){
+        return dinningTableService.getOccupiedTables(id_restaurant);
+    }
+
+
 
     @PostMapping(value = "/load")
     public List<DinningTable>persist(@RequestBody final DinningTable dinningTable){
