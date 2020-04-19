@@ -31,7 +31,7 @@ public class DinningTableController {
         return dinningTableService.getDinningTable(id);
     }
 
-    @GetMapping("/getOccupiedTables/{id_restaurant}")
+    @GetMapping("/getFreeTables/{id_restaurant}")
     public List<DinningTable> getOccupiedTables(@PathVariable Integer id_restaurant){
         return dinningTableService.getOccupiedTables(id_restaurant);
     }
