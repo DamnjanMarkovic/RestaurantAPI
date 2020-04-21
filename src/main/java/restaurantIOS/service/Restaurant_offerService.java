@@ -9,6 +9,7 @@ import restaurantIOS.models.*;
 import restaurantIOS.models.dto.AvailableOffers;
 import restaurantIOS.models.dto.IngredientsInOffer;
 import restaurantIOS.models.dto.Restaurant_offer_ingredientDTO;
+import restaurantIOS.repository.ImagesRepository;
 import restaurantIOS.repository.Restaurant_offerRepository;
 
 import java.util.*;
@@ -19,11 +20,13 @@ import java.util.stream.Collectors;
 public class Restaurant_offerService {
 
 
-    private Restaurant_offerRepository restaurant_offerRepository;
+    private ImagesRepository imagesRepository;
 
-    public Restaurant_offerService(Restaurant_offerRepository restaurant_offerRepository) {
+    public Restaurant_offerService(ImagesRepository imagesRepository, Restaurant_offerRepository restaurant_offerRepository) {
+        this.imagesRepository = imagesRepository;
         this.restaurant_offerRepository = restaurant_offerRepository;
     }
+    private Restaurant_offerRepository restaurant_offerRepository;
 
     @Transactional
     public List<Restaurant_offer> getAll() {
@@ -185,6 +188,29 @@ public class Restaurant_offerService {
             return availableOffers;
 
     }
+    @Transactional
+    public List<Images> getOffersPhotos() {
+        List<Integer> listOffersIDs = restaurant_offerRepository.getOffersIDs();
+        return getAllOffersPhotos(listOffersIDs);
+
+    }
+    @Transactional
+    private List<Images> getAllOffersPhotos(List<Integer> listOffersIDs) {
+        Images imageOffer = new Images();
+        List<Images> listImageOffers = new ArrayList<>();
+        for (Integer inter: listOffersIDs             ) {
+            imageOffer = imagesRepository.getSpecificPhotos(inter);
+            if (imageOffer!=null) {
+                if (!listImageOffers.contains(imageOffer)) {
+                    listImageOffers.add(imageOffer);
+                }
+            }
+        }
+        return listImageOffers;
+    }
+
+
+
 }
 
 

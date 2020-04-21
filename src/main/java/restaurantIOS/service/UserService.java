@@ -1,13 +1,16 @@
 package restaurantIOS.service;
 
 import org.springframework.data.domain.Example;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import restaurantIOS.error.EntityNotFoundException;
+import restaurantIOS.models.Images;
 import restaurantIOS.models.Role;
 import restaurantIOS.models.dto.MyLoginDetails;
 import restaurantIOS.models.User;
 import restaurantIOS.models.dto.UserRequest;
 import restaurantIOS.models.dto.UserResponse;
+import restaurantIOS.repository.ImagesRepository;
 import restaurantIOS.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,9 +27,11 @@ public class UserService implements UserDetailsService {
 
 
     private final UserRepository userRepository;
+    private final ImagesRepository imagesRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ImagesRepository imagesRepository) {
         this.userRepository = userRepository;
+        this.imagesRepository = imagesRepository;
     }
 
     @Transactional
@@ -34,6 +39,27 @@ public class UserService implements UserDetailsService {
         Optional<User> user = userRepository.findByUserName(userName);
         user.orElseThrow(() -> new UsernameNotFoundException("Not found: " + userName));
         return user.map(MyLoginDetails::new).get();
+    }
+    @Transactional
+    public List<Images> getUsersPhotos() {
+        List<Integer> listUsersIDs = userRepository.getUsersIDs();
+        return getAllUsersPhotos(listUsersIDs);
+    }
+
+
+
+    private List<Images> getAllUsersPhotos(List<Integer> listUsersIDs) {
+        Images imageUser = new Images();
+        List<Images> listImageUsers = new ArrayList<>();
+        for (Integer inter: listUsersIDs             ) {
+            imageUser = imagesRepository.getSpecificPhotos(inter);
+            if (imageUser!=null) {
+                if (!listImageUsers.contains(imageUser)) {
+                    listImageUsers.add(imageUser);
+                }
+            }
+        }
+        return listImageUsers;
     }
 
 

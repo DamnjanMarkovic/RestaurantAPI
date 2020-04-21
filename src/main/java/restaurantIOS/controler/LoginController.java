@@ -6,6 +6,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import restaurantIOS.error.EntityNotFoundException;
@@ -36,6 +37,10 @@ public class LoginController {
     public String index() {
         return "index";
     }
+    @RequestMapping("/index")
+    public String indexPage() {
+        return "index";
+    }
 
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -47,6 +52,7 @@ public class LoginController {
             );
         } catch (BadCredentialsException e) {
             throw new Exception("Incorrect username or password", e);
+
         }
         final UserDetails userDetails = myuserService
                 .loadUserByUsername(loginRequest.getUsername());

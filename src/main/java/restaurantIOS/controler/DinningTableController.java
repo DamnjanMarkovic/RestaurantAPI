@@ -30,7 +30,7 @@ public class DinningTableController {
     public List<DinningTable> getDinningTable(@PathVariable Integer id){
         return dinningTableService.getDinningTable(id);
     }
-//changed method name
+
     @GetMapping("/getOccupiedTables/{id_restaurant}")
     public List<DinningTable> getOccupiedTables(@PathVariable Integer id_restaurant){
         return dinningTableService.getOccupiedTables(id_restaurant);

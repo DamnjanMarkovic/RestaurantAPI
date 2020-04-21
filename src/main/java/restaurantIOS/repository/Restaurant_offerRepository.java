@@ -5,6 +5,7 @@ package restaurantIOS.repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import restaurantIOS.models.Images;
 import restaurantIOS.models.Restaurant_offer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -19,6 +20,12 @@ public interface Restaurant_offerRepository extends JpaRepository<Restaurant_off
     @Query("SELECT o from Restaurant_offer o inner JOIN o.ingredients i inner join i.restaurant_offer_ingredients roi inner JOIN i.restaurants r inner" +
             " join r.available_ingredients z group by o.id")
     List<Restaurant_offer> getAllAvailableOffers();
+
+    @Query(value = "SELECT restaurant_offer.image FROM restaurant_offer",
+            nativeQuery = true)
+    List<Integer> getOffersIDs();
+
+
 
 }
 

@@ -16,7 +16,7 @@ import java.util.Optional;
 public class RestaurantController {
 
 
-    private RestaurantService restaurantService;
+    private final RestaurantService restaurantService;
 
     public RestaurantController(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;

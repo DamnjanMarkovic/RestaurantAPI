@@ -31,7 +31,7 @@ public class ImagesController {
     }
 
 
-    @RequestMapping(value = "getImageOnID/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @RequestMapping(value = "/getImageOnID/{id}")
     public ResponseEntity<byte[]> getImage(@PathVariable Integer id) throws IOException {
     Optional<Images> photoDTO = imagesService.getPhoto(id);
     RandomAccessFile f = new RandomAccessFile(photoDTO.get().getImageLocation(), "r");
