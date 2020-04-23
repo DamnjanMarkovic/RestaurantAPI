@@ -6,10 +6,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import restaurantIOS.error.EntityNotFoundException;
 import restaurantIOS.models.dto.LoginRequest;
 import restaurantIOS.models.dto.LoginResponse;
 import restaurantIOS.models.dto.MyLoginDetails;
@@ -45,14 +43,18 @@ public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody LoginRequest loginRequest) throws Exception {
-        Authentication authentication;
+        Authentication authentication = null;
         try {
             authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
             );
         } catch (BadCredentialsException e) {
-            throw new Exception("Incorrect username or password", e);
 
+            throw new Exception("Password doesn't match username", e.getCause());
+
+        } catch (Exception ef){
+
+            throw new Exception("Username does not exist in the database.", ef.getCause());
         }
         final UserDetails userDetails = myuserService
                 .loadUserByUsername(loginRequest.getUsername());

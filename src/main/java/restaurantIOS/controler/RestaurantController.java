@@ -35,9 +35,14 @@ public class RestaurantController {
 
 
     @GetMapping("/{id}")
-    public Optional<Restaurant> getRestaurant(@PathVariable Integer id) throws EntityNotFoundException {
+    public Optional<Restaurant> getRestaurant(@PathVariable Integer id) throws Exception {
+        try {
+            return restaurantService.getRestaurant(id);
+        } catch (Exception e){
+            throw new Exception("poruka", e.initCause(e.getCause()));
+//        e.getCause();
+        }//return restaurantService.getRestaurant(1);
 
-        return restaurantService.getRestaurant(id);
     }
 
 

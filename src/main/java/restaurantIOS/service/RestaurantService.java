@@ -4,11 +4,11 @@ package restaurantIOS.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import restaurantIOS.error.EntityNotFoundException;
+
 import restaurantIOS.models.Restaurant;
 import restaurantIOS.repository.RestaurantRepository;
 
-//import javax.persistence.EntityNotFoundException;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,12 +28,15 @@ public class RestaurantService {
     }
 
     @Transactional
-    public Optional<Restaurant> getRestaurant(Integer id){
-        Optional<Restaurant> restaurant = restaurantRepository.findById((id));
-        if (!restaurant.isPresent()) {
-            throw new EntityNotFoundException(Restaurant.class, "id", id.toString());
-        }
-        return restaurant;
+    public Optional<Restaurant> getRestaurant(Integer id)  {
+
+//        try {
+            return restaurantRepository.findById((id));
+//        }catch (EntityNotFoundException e){
+//            throw new EntityNotFoundException();
+//        }
+
+
     }
 
 

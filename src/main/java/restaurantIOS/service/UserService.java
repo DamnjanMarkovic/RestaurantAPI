@@ -1,9 +1,7 @@
 package restaurantIOS.service;
 
 import org.springframework.data.domain.Example;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
-import restaurantIOS.error.EntityNotFoundException;
 import restaurantIOS.models.Images;
 import restaurantIOS.models.Role;
 import restaurantIOS.models.dto.MyLoginDetails;
@@ -14,10 +12,10 @@ import restaurantIOS.repository.ImagesRepository;
 import restaurantIOS.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 
+import javax.persistence.EntityNotFoundException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,9 +33,9 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userName) {
         Optional<User> user = userRepository.findByUserName(userName);
-        user.orElseThrow(() -> new UsernameNotFoundException("Not found: " + userName));
+        //user.orElseThrow(() -> new UsernameNotFoundException("Not found: " + userName));
         return user.map(MyLoginDetails::new).get();
     }
     @Transactional
@@ -103,7 +101,7 @@ public class UserService implements UserDetailsService {
         List<User> allUsers = userRepository.findAllById(Collections.singleton(id));
         List<UserResponse>listResponse = returnUsersFormated(allUsers);
         if (listResponse.isEmpty()) {
-            throw new EntityNotFoundException(User.class, "id", id.toString());
+            throw new EntityNotFoundException();
         }
         return listResponse;
     }
