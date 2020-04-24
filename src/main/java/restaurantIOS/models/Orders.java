@@ -1,10 +1,11 @@
 package restaurantIOS.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "order_offers")
-public class Orders {
+public class Orders implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +25,18 @@ public class Orders {
         this.id_restaurant = id_restaurant;
     }
 
+    public Orders(int id_order, int id_offer, double quantity, int id_table, int id_bill, int id_user_deleted, int id_restaurant) {
+        this.id_order = id_order;
+        this.id_offer = id_offer;
+        this.quantity = quantity;
+        this.id_table = id_table;
+        this.id_bill = id_bill;
+        this.id_user_deleted = id_user_deleted;
+        this.id_restaurant = id_restaurant;
+    }
 
-
+    public Orders() {
+    }
 
     public int getId_order() {
         return id_order;

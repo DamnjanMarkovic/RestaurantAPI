@@ -35,9 +35,10 @@ public class IngredientController {
     }
 
     @PostMapping(value = "/load")
-    public List<Ingredients>persist(@RequestBody final Ingredients ingredients){
+    public List<Ingredients>persist(@RequestBody final Ingredients ingredients,
+                    @PathVariable Integer id_restaurant, @PathVariable Double quantityAvailable){
 
-        ingredientService.save(ingredients);
+        ingredientService.save(ingredients, id_restaurant, quantityAvailable);
         return ingredientService.getAll();
 
 

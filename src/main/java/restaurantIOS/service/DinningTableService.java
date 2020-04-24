@@ -10,6 +10,7 @@ import restaurantIOS.repository.DinningTableRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class DinningTableService {
@@ -46,7 +47,7 @@ public class DinningTableService {
     @Transactional
     public List<DinningTable> getOccupiedTables(Integer id_restaurant) {
 
-        List<Integer> availableDiningTablesIDs = dinningTableRepository.getOccupiedTables(id_restaurant);
+        Set<Integer> availableDiningTablesIDs = dinningTableRepository.getOccupiedTables(id_restaurant);
         return dinningTableRepository.findAllById(availableDiningTablesIDs);
 
     }

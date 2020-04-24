@@ -1,6 +1,7 @@
 package restaurantIOS.service;
 
 import org.springframework.data.domain.Example;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 import restaurantIOS.models.Images;
 import restaurantIOS.models.Role;
@@ -35,7 +36,11 @@ public class UserService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String userName) {
         Optional<User> user = userRepository.findByUserName(userName);
-        //user.orElseThrow(() -> new UsernameNotFoundException("Not found: " + userName));
+        try {
+            user.orElseThrow(() -> new Exception("Not found: " + userName));
+        } catch (Exception e) {
+            throw new EntityNotFoundException();
+        }
         return user.map(MyLoginDetails::new).get();
     }
     @Transactional
@@ -73,7 +78,7 @@ public class UserService implements UserDetailsService {
     public String save(UserRequest userRequest) throws SQLException {
     String result = null;
         User user = new User(userRequest.getUserName(), userRequest.getPassword(),
-                true, userRequest.getUserFirstName(), userRequest.getImageLink(),
+                true, userRequest.getUserFirstName(), userRequest.getId_image(),
                 null, null);
         userRepository.save(user);
         Integer idNewUser = userRepository.getSpecificUser(user.getUserFirstName());
@@ -89,7 +94,7 @@ public class UserService implements UserDetailsService {
         List<UserResponse> listUserResponse = new ArrayList<>();
         for (User us : allUsers) {
             UserResponse userResponse = new UserResponse(us.getId(), us.getUserFirstName(),
-                    us.getImageLink(), us.getRoles().stream().map(Role::getRole).collect(Collectors.toSet()),
+                    us.getId_image(), us.getRoles().stream().map(Role::getRole).collect(Collectors.toSet()),
                     us.getRestaurant().getId_restaurant());
             listUserResponse.add(userResponse);
         }

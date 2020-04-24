@@ -128,7 +128,7 @@ public class UserController {
 		images.setImagename(imageFile.getOriginalFilename());
 		try {
 			Integer id_image = imagesService.saveSpecificImage(imageFile, images);
-			userRequest.setImageLink((id_image).toString());
+			userRequest.setId_image(id_image);
 			response = userService.save(userRequest);
 			result = response;
 		} catch (SQLException e) {

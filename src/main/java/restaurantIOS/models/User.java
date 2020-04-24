@@ -24,7 +24,7 @@ public class User {
     private boolean active;
     @Column(name = "userFirstName")
     private String userFirstName;
-    private String imageLink;
+    private Integer id_image;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_restaurant", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_restaurant"))
@@ -37,20 +37,20 @@ public class User {
     private Set<Role> roles;
 
 
-    public User(String userName, String password, boolean active, String userFirstName, String imageLink) {
+    public User(String userName, String password, boolean active, String userFirstName, Integer id_image) {
         this.userName = userName;
         this.password = password;
         this.active = active;
         this.userFirstName = userFirstName;
-        this.imageLink = imageLink;
+        this.id_image = id_image;
     }
 
-    public User(String userName, String password, boolean active, String userFirstName, String imageLink, Restaurant restaurant, Set<Role> roles) {
+    public User(String userName, String password, boolean active, String userFirstName, Integer id_image, Restaurant restaurant, Set<Role> roles) {
         this.userName = userName;
         this.password = password;
         this.active = active;
         this.userFirstName = userFirstName;
-        this.imageLink = imageLink;
+        this.id_image = id_image;
         this.restaurant = restaurant;
         this.roles = roles;
     }
@@ -58,13 +58,13 @@ public class User {
     public User() {
     }
 
-    public User(int id, String userName, String password, boolean active, String userFirstName, String imageLink) {
+    public User(int id, String userName, String password, boolean active, String userFirstName, Integer id_image) {
         this.id = id;
         this.userName = userName;
         this.password = password;
         this.active = active;
         this.userFirstName = userFirstName;
-        this.imageLink = imageLink;
+        this.id_image = id_image;
 
 
     }
@@ -81,7 +81,7 @@ public class User {
         this.password = user.getPassword();
         this.active = user.isActive();
         this.userFirstName = user.getUserFirstName();
-        this.imageLink = user.getImageLink();
+        this.id_image = user.getId_image();
         this.roles = user.getRoles();
         this.restaurant = user.getRestaurant();
     }
@@ -146,11 +146,11 @@ public class User {
         this.userFirstName = userFirstName;
     }
 
-    public String getImageLink() {
-        return imageLink;
+    public Integer getId_image() {
+        return id_image;
     }
 
-    public void setImageLink(String imageLink) {
-        this.imageLink = imageLink;
+    public void setId_image(Integer id_image) {
+        this.id_image = id_image;
     }
 }

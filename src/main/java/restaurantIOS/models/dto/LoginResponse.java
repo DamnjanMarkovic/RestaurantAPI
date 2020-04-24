@@ -10,18 +10,18 @@ public class LoginResponse implements Serializable {
     private final String jwt;
     private String userName;
     private String userFirstName;
-    private String imageLink;
+    private Integer id_image;
     private Set<String> role;
     private int id_restaurant;
 
 
     public LoginResponse(int id_user, String jwt, String userName,
-                         String userFirstName, String imageLink, Set<String> role, int id_restaurant) {
+                         String userFirstName, Integer id_image, Set<String> role, int id_restaurant) {
         this.id_user = id_user;
         this.jwt = jwt;
         this.userName = userName;
         this.userFirstName = userFirstName;
-        this.imageLink = imageLink;
+        this.id_image = id_image;
         this.role = role;
         this.id_restaurant = id_restaurant;
 
@@ -59,16 +59,15 @@ public class LoginResponse implements Serializable {
         this.userFirstName = userFirstName;
     }
 
-    public String getImageLink() {
-        return imageLink;
+    public Integer getId_image() {
+        return id_image;
     }
 
-    public void setImageLink(String imageLink) {
-        this.imageLink = imageLink;
+    public void setId_image(Integer id_image) {
+        this.id_image = id_image;
     }
 
-
-    /*
+/*
     public List<GrantedAuthority> getAuthorities() {
         return authorities;
     }

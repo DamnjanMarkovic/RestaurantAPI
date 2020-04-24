@@ -1,14 +1,13 @@
 package restaurantIOS.controler;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import restaurantIOS.models.DinningTable;
 import restaurantIOS.models.Orders;
 import restaurantIOS.service.OrdersService;
 
 import javax.validation.Valid;
 import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/rest/orders")
@@ -21,7 +20,7 @@ public class OrdersController {
     }
 
     @PostMapping(value = "/load")
-    public String loadOrder (@Valid @RequestBody Orders orders){
+    public String loadOrder (@Valid @RequestBody List<Orders> orders){
         String result = null;
         String response = null;
         try {
@@ -32,6 +31,15 @@ public class OrdersController {
         }
         return result;
     }
+
+    @GetMapping("/getOpenOrders/{id_dinningTable}")
+    public List<Orders> getOpenOrders(@PathVariable Integer id_dinningTable){
+        return ordersService.getOpenOrders(id_dinningTable);
+    }
+
+
+
+
 
 
 }

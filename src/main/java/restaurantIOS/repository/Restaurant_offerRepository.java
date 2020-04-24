@@ -21,7 +21,7 @@ public interface Restaurant_offerRepository extends JpaRepository<Restaurant_off
             " join r.available_ingredients z group by o.id")
     List<Restaurant_offer> getAllAvailableOffers();
 
-    @Query(value = "SELECT restaurant_offer.image FROM restaurant_offer",
+    @Query(value = "SELECT restaurant_offer.id_image FROM restaurant_offer",
             nativeQuery = true)
     List<Integer> getOffersIDs();
 

@@ -31,7 +31,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Integer getIDRoleBasedOnRole(String role);
 
 
-    @Query(value = "SELECT user.imageLink FROM user",
+    @Query(value = "SELECT user.id_image FROM user",
             nativeQuery = true)
     List<Integer> getUsersIDs();
 

@@ -15,10 +15,11 @@ import restaurantIOS.models.Role;
 import restaurantIOS.service.UserService;
 import restaurantIOS.util.JwtUtil;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.stream.Collectors;
-@Controller
-//@RestController
+//@Controller
+@RestController
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;
@@ -52,6 +53,9 @@ public class LoginController {
 
             throw new Exception("Password doesn't match username", e.getCause());
 
+        } catch (EntityNotFoundException ew){
+            ew.printStackTrace();
+
         } catch (Exception ef){
 
             throw new Exception("Username does not exist in the database.", ef.getCause());
@@ -63,7 +67,7 @@ public class LoginController {
         MyLoginDetails myLoginDetails = (MyLoginDetails) authentication.getPrincipal();
 
         return ResponseEntity.ok(new LoginResponse(myLoginDetails.getId(), jwt, myLoginDetails.getUsername(), myLoginDetails.getUserFirstName(),
-                myLoginDetails.getImageLink(), myLoginDetails.getRoles().stream().map(Role::getRole).collect(Collectors.toSet()), myLoginDetails.getRestaurant().getId_restaurant()));
+                myLoginDetails.getId_image(), myLoginDetails.getRoles().stream().map(Role::getRole).collect(Collectors.toSet()), myLoginDetails.getRestaurant().getId_restaurant()));
 
     }
 

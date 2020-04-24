@@ -26,7 +26,14 @@ public class Ingredients {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_ingredient")
     private Set<Restaurant_offer_ingredients> restaurant_offer_ingredients;
-/*
+
+    public Ingredients(String ingredient_name, double purchase_price, String quantity_measure) {
+        this.ingredient_name = ingredient_name;
+        this.purchase_price = purchase_price;
+        this.quantity_measure = quantity_measure;
+    }
+
+    /*
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "restaurant_offer_ingredients", joinColumns= @JoinColumns("id_ingredient", "id_ingredient"))

@@ -11,15 +11,15 @@ public class UserRequest implements Serializable{
     private String userName;
     private String password;
     private String userFirstName;
-    private String imageLink;
+    private Integer id_image;
     private int id_restaurant;
     private String role;
 
-    public UserRequest(String userName, String password, String userFirstName, String imageLink, int id_restaurant, String role) {
+    public UserRequest(String userName, String password, String userFirstName, Integer id_image, int id_restaurant, String role) {
         this.userName = userName;
         this.password = password;
         this.userFirstName = userFirstName;
-        this.imageLink = imageLink;
+        this.id_image = id_image;
         this.id_restaurant = id_restaurant;
         this.role = role;
     }
@@ -50,12 +50,12 @@ public class UserRequest implements Serializable{
         this.userFirstName = userFirstName;
     }
 
-    public String getImageLink() {
-        return imageLink;
+    public Integer getId_image() {
+        return id_image;
     }
 
-    public void setImageLink(String imageLink) {
-        this.imageLink = imageLink;
+    public void setId_image(Integer id_image) {
+        this.id_image = id_image;
     }
 
     public int getId_restaurant() {

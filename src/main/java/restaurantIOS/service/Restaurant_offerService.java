@@ -114,7 +114,7 @@ public class Restaurant_offerService {
 
             }
             availableOffersOne = new AvailableOffers(offs.getId(), offs.getRestaurant_offer_name(),
-                    offs.getRestaurant_offer_price(), offs.getOffer_type(), offs.getImage(), ingredientsInOffer);
+                    offs.getRestaurant_offer_price(), offs.getOffer_type(), offs.getId_image(), ingredientsInOffer);
 
             List<IngredientsInOffer> list = new ArrayList<IngredientsInOffer>(availableOffersOne.getIngredientsInOffer());
 
@@ -179,7 +179,7 @@ public class Restaurant_offerService {
                     ingredientsInOffer.add(ingredientsInOffer1);
                 }
                 availableOffersOne = new AvailableOffers(offs.getId(), offs.getRestaurant_offer_name(),
-                        offs.getRestaurant_offer_price(), offs.getOffer_type(), offs.getImage(), ingredientsInOffer);
+                        offs.getRestaurant_offer_price(), offs.getOffer_type(), offs.getId_image(), ingredientsInOffer);
 
                 List<IngredientsInOffer> list = new ArrayList<IngredientsInOffer>(availableOffersOne.getIngredientsInOffer());
 

@@ -35,7 +35,7 @@ public class Restaurant_offer {
         private String restaurant_offer_name;
         private Double restaurant_offer_price;
         private String offer_type;
-        private String image;
+        private Integer id_image;
 
         @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
         @JoinTable(name = "restaurant_offer_ingredients", joinColumns = @JoinColumn(name = "id_restaurant_offer"), inverseJoinColumns = @JoinColumn(name = "id_ingredient"))
@@ -57,12 +57,12 @@ public class Restaurant_offer {
         this.restaurant_offer_name = restaurant_offer_name;
     }
 
-    public String getImage() {
-        return image;
+    public Integer getId_image() {
+        return id_image;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setId_image(Integer id_image) {
+        this.id_image = id_image;
     }
 
     public Integer getId() {

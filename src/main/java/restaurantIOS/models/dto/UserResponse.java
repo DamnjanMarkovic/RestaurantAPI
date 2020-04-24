@@ -9,15 +9,15 @@ public class UserResponse implements Serializable {
 
     private int id_user;
     private String userFirstName;
-    private String imageLink;
+    private Integer id_image;
     private Set<String> role;
     private int id_restaurant;
 
 
-    public UserResponse(int id_user, String userFirstName, String imageLink, Set<String> role, int id_restaurant) {
+    public UserResponse(int id_user, String userFirstName, Integer id_image, Set<String> role, int id_restaurant) {
         this.id_user = id_user;
         this.userFirstName = userFirstName;
-        this.imageLink = imageLink;
+        this.id_image = id_image;
         this.role = role;
         this.id_restaurant = id_restaurant;
 
@@ -31,12 +31,12 @@ public class UserResponse implements Serializable {
         this.userFirstName = userFirstName;
     }
 
-    public String getImageLink() {
-        return imageLink;
+    public Integer getId_image() {
+        return id_image;
     }
 
-    public void setImageLink(String imageLink) {
-        this.imageLink = imageLink;
+    public void setId_image(Integer id_image) {
+        this.id_image = id_image;
     }
 
     public int getId_user() {

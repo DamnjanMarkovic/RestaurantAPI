@@ -35,13 +35,28 @@ public class IngredientService {
 
 
     @Transactional
-    public List<Ingredients>save(Ingredients ingredients){
-        ingredientRepository.save(ingredients);
+    public List<Ingredients>save(Ingredients ingredients,
+                                 Integer id_restaurant, Double quantityAvailable){
+        Ingredients ingredients1 = ingredientRepository.save(ingredients);
+
+        if(checkIfExistInRestaurant(ingredients1.getId_ingredient(), id_restaurant)){
+            ingredientRepository.addAvailableIngredients(quantityAvailable, id_restaurant,
+                    ingredients1.getId_ingredient());
+        }else {
+            ingredientRepository.insertAvailableIngredients(ingredients1.getId_ingredient(),
+                    id_restaurant, quantityAvailable);
+        }
+
+
         return ingredientRepository.findAll();
     }
 
+    private boolean checkIfExistInRestaurant(Integer id_ingredient, Integer id_restaurant) {
+        if (ingredientRepository.checkIfExistInRestaurant(id_ingredient, id_restaurant)>0){
+            return true;
+        }return false;
 
-
+    }
 
 
 }

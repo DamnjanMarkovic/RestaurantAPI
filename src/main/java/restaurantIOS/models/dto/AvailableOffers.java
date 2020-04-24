@@ -11,19 +11,19 @@ public class AvailableOffers implements Serializable {
     private String restaurant_offer_name;
     private Double restaurant_offer_price;
     private String offer_type;
-    private String image;
+    private Integer id_image;
 
     private Set<IngredientsInOffer> ingredientsInOffer;
 
 
 
     public AvailableOffers(Integer idOffer, String restaurant_offer_name, Double restaurant_offer_price,
-                           String offer_type, String image, Set<IngredientsInOffer> ingredientsInOffer) {
+                           String offer_type, Integer id_image, Set<IngredientsInOffer> ingredientsInOffer) {
         this.idOffer = idOffer;
         this.restaurant_offer_name = restaurant_offer_name;
         this.restaurant_offer_price = restaurant_offer_price;
         this.offer_type = offer_type;
-        this.image = image;
+        this.id_image = id_image;
 
         this.ingredientsInOffer = ingredientsInOffer;
 
@@ -71,12 +71,11 @@ public class AvailableOffers implements Serializable {
         this.offer_type = offer_type;
     }
 
-    public String getImage() {
-        return image;
+    public Integer getId_image() {
+        return id_image;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setId_image(Integer id_image) {
+        this.id_image = id_image;
     }
-
 }

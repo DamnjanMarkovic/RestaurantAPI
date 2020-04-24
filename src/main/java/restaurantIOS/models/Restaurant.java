@@ -15,7 +15,7 @@ public class Restaurant {
         private String street;
         private Integer number;
         private String city;
-        private String image;
+        private Integer id_image;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     //@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -83,11 +83,11 @@ public class Restaurant {
         this.city = city;
     }
 
-    public String getImage() {
-        return image;
+    public Integer getId_image() {
+        return id_image;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setId_image(Integer id_image) {
+        this.id_image = id_image;
     }
 }
