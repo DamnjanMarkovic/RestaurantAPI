@@ -18,8 +18,8 @@ import restaurantIOS.util.JwtUtil;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.stream.Collectors;
-//@Controller
-@RestController
+@Controller
+//@RestController
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;
@@ -32,11 +32,12 @@ public class LoginController {
         this.jwtTokenUtil = jwtTokenUtil;
         this.myuserService = myuserService;
     }
-    @RequestMapping("/")
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
         return "index";
     }
-    @RequestMapping("/index")
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String indexPage() {
         return "index";
     }
