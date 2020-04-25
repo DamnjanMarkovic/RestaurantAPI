@@ -32,8 +32,9 @@ public class Bill {
         this.orders = orders;
     }
 
-    public Bill(Integer id_dinning_table, Integer id_user, String payment_type, Double reduction, Double total_amount, Integer id_restaurant) {
+    public Bill(Integer id_dinning_table, LocalDateTime bill_time, Integer id_user, String payment_type, Double reduction, Double total_amount, Integer id_restaurant) {
         this.id_dinning_table = id_dinning_table;
+        this.bill_time = bill_time;
         this.id_user = id_user;
         this.payment_type = payment_type;
         this.reduction = reduction;

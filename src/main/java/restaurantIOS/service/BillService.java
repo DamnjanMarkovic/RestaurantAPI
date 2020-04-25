@@ -11,6 +11,7 @@ import restaurantIOS.repository.OrdersRespository;
 import restaurantIOS.repository.Restaurant_offerRepository;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -31,13 +32,19 @@ public class BillService {
     @Transactional
     public Bill loadBill (Bill billArrived) throws SQLException {
         List<Restaurant_offer>listRof = getAllOffersInBill(billArrived);
+        LocalDateTime now = LocalDateTime.now();
         Double finalPrice = calculatePrice(billArrived, listRof);
-        Bill billFinal = new Bill(billArrived.getId_dinning_table(), billArrived.getId_user(), billArrived.getPayment_type(),
+        Bill billFinal = new Bill(billArrived.getId_dinning_table(), now, billArrived.getId_user(), billArrived.getPayment_type(),
                 billArrived.getReduction(), finalPrice, billArrived.getId_restaurant());
         Bill billReturned = billRepository.save(billFinal);
         insertOrdersForBill(billReturned, billArrived);
         return billReturned;
     }
+
+
+
+
+
 
     @Transactional
     public List<Bill> getAll(){

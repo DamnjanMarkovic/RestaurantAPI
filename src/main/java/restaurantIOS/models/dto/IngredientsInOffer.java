@@ -1,10 +1,8 @@
 package restaurantIOS.models.dto;
 
-import restaurantIOS.models.Available_ingredients;
-import restaurantIOS.models.Restaurant_offer_ingredients;
 
 import java.io.Serializable;
-import java.util.Set;
+
 
 public class IngredientsInOffer implements Serializable {
 

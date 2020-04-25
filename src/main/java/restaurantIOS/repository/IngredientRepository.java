@@ -41,9 +41,3 @@ public interface IngredientRepository extends JpaRepository<Ingredients,Integer>
     nativeQuery = true)
     Integer checkIfExistInRestaurant(Integer id_ingredient, Integer id_restaurant);
 }
-
-/*
-    @Query(value = "SELECT ingredients.ingredient_name, available_ingredients.quantityAvailable FROM ingredients join available_ingredients " +
-            "on ingredients.id_ingredient = available_ingredients.id_ingredients JOIN restaurants on available_ingredients.id_restaurant = restaurants.id_restaurant " +
-            "where restaurants.id_restaurant = ?",ue)
-    List<Ingredients> getAvailableIngredientsInRestaurant*/

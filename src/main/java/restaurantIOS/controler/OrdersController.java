@@ -6,6 +6,7 @@ import restaurantIOS.models.Orders;
 import restaurantIOS.service.OrdersService;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class OrdersController {
         try {
             response = ordersService.save(orders);
             result = response;
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
         return result;

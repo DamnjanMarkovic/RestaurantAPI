@@ -8,8 +8,11 @@ import org.springframework.stereotype.Repository;
 import restaurantIOS.models.Images;
 import restaurantIOS.models.Restaurant_offer;
 import org.springframework.data.jpa.repository.JpaRepository;
+import restaurantIOS.models.dto.IngredientsInOfferDTO;
 
 import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface Restaurant_offerRepository extends JpaRepository<Restaurant_offer, Integer> {
 
@@ -24,6 +27,10 @@ public interface Restaurant_offerRepository extends JpaRepository<Restaurant_off
     @Query(value = "SELECT restaurant_offer.id_image FROM restaurant_offer",
             nativeQuery = true)
     List<Integer> getOffersIDs();
+
+    @Query(value = "SELECT id_ingredient as ingred, quantity as quan FROM restaurant_offer_ingredients WHERE id_restaurant_offer = ?",
+            nativeQuery = true)
+    List<List<String>> getIngredientsInOffer(int id_offer);
 
 
 
