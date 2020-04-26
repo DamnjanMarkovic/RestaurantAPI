@@ -159,7 +159,7 @@ public class Restaurant_offerService {
         List<Restaurant_offer> restOffs = restaurant_offerRepository.getAllAvailableOffers();
             List<AvailableOffers> availableOffers = new ArrayList<>();
             AvailableOffers availableOffersOne = null;
-            double quantity = 0;
+            double quantity = 10;
             for (Restaurant_offer offs : restOffs) {
                 Set<IngredientsInOffer> ingredientsInOffer = new HashSet<>();
                 for (Ingredients ingre : offs.getIngredients()) {
