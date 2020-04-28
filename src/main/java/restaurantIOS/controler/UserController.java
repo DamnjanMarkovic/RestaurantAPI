@@ -120,8 +120,7 @@ public class UserController {
 
 	@PostMapping(value = "/loadUser", consumes = {"multipart/form-data"})
 	public String saveUser (@RequestParam("imageFile") @PathVariable MultipartFile imageFile,
-							UserRequest userRequest
-							){
+							UserRequest userRequest){
 		String result = null;
 		String response = null;
 		Images images = new Images();

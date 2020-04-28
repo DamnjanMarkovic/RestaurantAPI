@@ -33,20 +33,6 @@ public class Ingredients {
         this.quantity_measure = quantity_measure;
     }
 
-    /*
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "restaurant_offer_ingredients", joinColumns= @JoinColumns("id_ingredient", "id_ingredient"))
-
-
-/*
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "restaurant_offer_ingredients")
-    @JoinColumn(name = "id_ingredients")
-    private Restaurant_offer_ingredients restaurant_offer_ingredients;*/
-
-
-
     public Set<Restaurant_offer_ingredients> getRestaurant_offer_ingredients() {
         return restaurant_offer_ingredients;
     }

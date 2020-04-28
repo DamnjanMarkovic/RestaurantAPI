@@ -3,6 +3,7 @@ package restaurantIOS.controler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import restaurantIOS.models.Ingredients;
+import restaurantIOS.models.dto.IngredientsRequest;
 import restaurantIOS.service.IngredientService;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 public class IngredientController {
 
 
-    private IngredientService ingredientService;
+    private final IngredientService ingredientService;
 
     public IngredientController(IngredientService ingredientService) {
         this.ingredientService = ingredientService;
@@ -35,10 +36,9 @@ public class IngredientController {
     }
 
     @PostMapping(value = "/load")
-    public List<Ingredients>persist(@RequestBody final Ingredients ingredients,
-                    @PathVariable Integer id_restaurant, @PathVariable Double quantityAvailable){
-
-        ingredientService.save(ingredients, id_restaurant, quantityAvailable);
+    public List<Ingredients>persist(@RequestBody IngredientsRequest ingredientsRequest){
+        System.out.println("nesto");
+        ingredientService.save(ingredientsRequest);
         return ingredientService.getAll();
 
 
@@ -47,3 +47,17 @@ public class IngredientController {
 
 
 }
+
+
+/*
+    @PostMapping(value = "/load")
+    public List<Ingredients>persist(@RequestParam("id_restaurant") @PathVariable Integer id_restaurant,
+                                    @RequestParam("quantityUpdating") @PathVariable Double quantityUpdating,
+                                    @RequestBody Ingredients ingredients){
+        System.out.println("nesto");
+        ingredientService.save(ingredients, id_restaurant, quantityUpdating);
+        return ingredientService.getAll();
+
+
+    }
+ */

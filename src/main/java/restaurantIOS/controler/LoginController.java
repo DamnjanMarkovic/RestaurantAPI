@@ -18,8 +18,8 @@ import restaurantIOS.util.JwtUtil;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.stream.Collectors;
-//@Controller
-@RestController
+@Controller
+//@RestController
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;

@@ -6,12 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import restaurantIOS.models.*;
-import restaurantIOS.models.dto.AvailableOffers;
-import restaurantIOS.models.dto.IngredientsInOffer;
-import restaurantIOS.models.dto.Restaurant_offer_ingredientDTO;
+import restaurantIOS.models.dto.*;
 import restaurantIOS.repository.ImagesRepository;
 import restaurantIOS.repository.Restaurant_offerRepository;
 
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -41,11 +40,32 @@ public class Restaurant_offerService {
 
 
     @Transactional
-    public List<Restaurant_offer> save(Restaurant_offer restaurant_offer) {
-        restaurant_offerRepository.save(restaurant_offer);
-        return restaurant_offerRepository.findAll();
+    public Restaurant_offer save(RestaurantOfferRequest restaurantOfferRequest) throws SQLException {
+
+        Restaurant_offer restaurant_offer =
+                new Restaurant_offer(restaurantOfferRequest.getRestaurant_offer_name(),
+                restaurantOfferRequest.getRestaurant_offer_price(), restaurantOfferRequest.getOffer_type(),
+                restaurantOfferRequest.getId_image());
+
+        Restaurant_offer restaurantOfferNew = restaurant_offerRepository.save(restaurant_offer);
+
+        for (IngredientsInOfferDTO roiDTO: restaurantOfferRequest.getListIngredientsInOffer()             ) {
+
+            restaurant_offerRepository.connectOfferAndIngredients(restaurantOfferNew.getId(),
+                    roiDTO.getId_ingredient(), roiDTO.getQuantity());
+
+        }
+
+
+
+
+        return restaurantOfferNew;
 
     }
+
+
+
+
 
     @Transactional
     public Optional<Restaurant_offer> getRestaurantOfferOnName(String restaurant_offer_name) {
