@@ -14,16 +14,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "restaurant_offer")
-//@NamedQuery(name = "Restaurant_offer.getAvailableOffersInRestaurant",
-  //      query = "SELECT o from Restaurant_offer o inner JOIN o.ingredients i inner JOIN i.restaurants r where r.id_restaurant =?1")
-/*
-@NamedQuery(name = "Restaurant_offer.getAvailableOffersInRestaurant",
-        query = "select restaurant_offer.id_restaurant_offer, restaurant_offer.restaurant_offer_name,restaurant_offer.restaurant_offer_price, " +
-        "restaurant_offer.offer_type, restaurant_offer.image, ingredients.ingredient_name, ingredients.purchase_price, " +
-        "ingredients.quantity_measure, restaurant_offer_ingredients.quantity from restaurant_offer_ingredients INNER JOIN " +
-        "restaurant_offer ON restaurant_offer.id_restaurant_offer = restaurant_offer_ingredients.id_restaurant_offer INNER JOIN " +
-        "ingredients on ingredients.id_ingredient = restaurant_offer_ingredients.id_ingredient ORDER by restaurant_offer.restaurant_offer_name",
-        nativeQuery = true)*/
 
 public class Restaurant_offer {
 
@@ -43,6 +33,21 @@ public class Restaurant_offer {
 
 
     public Restaurant_offer() {
+    }
+
+    public Restaurant_offer(Integer id, String restaurant_offer_name, Double restaurant_offer_price, String offer_type, Integer id_image) {
+        this.id = id;
+        this.restaurant_offer_name = restaurant_offer_name;
+        this.restaurant_offer_price = restaurant_offer_price;
+        this.offer_type = offer_type;
+        this.id_image = id_image;
+    }
+
+    public Restaurant_offer(String restaurant_offer_name, Double restaurant_offer_price, String offer_type, Integer id_image) {
+        this.restaurant_offer_name = restaurant_offer_name;
+        this.restaurant_offer_price = restaurant_offer_price;
+        this.offer_type = offer_type;
+        this.id_image = id_image;
     }
 
     public Set<Ingredients> getIngredients() {

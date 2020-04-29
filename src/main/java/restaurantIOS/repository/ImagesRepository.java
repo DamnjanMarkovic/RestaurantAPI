@@ -14,11 +14,17 @@ public interface ImagesRepository extends JpaRepository<Images, Integer> {
     List<Integer> getSpecificPhoto(String role);
 
 
-
-
     @Query(value = "SELECT * FROM images WHERE images.id_image = ?",
             nativeQuery = true)
     Images getSpecificPhotos(Integer id_image);
+
+    @Query(value = "select count(*) from images WHERE imagename = ?",
+            nativeQuery = true)
+    Integer checkImagetexistance(String imagename);
+
+    @Query(value = "SELECT id_image FROM images WHERE imagename = ?",
+            nativeQuery = true)
+    Integer returnImageIDBasedOnImageName(String imagename);
 
 
     /*

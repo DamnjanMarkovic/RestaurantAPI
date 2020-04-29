@@ -11,8 +11,9 @@ public class IngredientsInOffer implements Serializable {
     private double purchase_price;
     private String quantity_measure;
     private double quantity;
-    //private Set<Available_ingredients> available_ingredients;
     private double quantityAvailable;
+
+
     public IngredientsInOffer(String ingredient_name, double purchase_price, String quantity_measure, double quantity, double quantityAvailable) {
         this.ingredient_name = ingredient_name;
         this.purchase_price = purchase_price;
@@ -20,6 +21,13 @@ public class IngredientsInOffer implements Serializable {
         this.quantity = quantity;
         this.quantityAvailable = quantityAvailable;
 
+    }
+
+    public IngredientsInOffer(String ingredient_name, double purchase_price, String quantity_measure, double quantityAvailable) {
+        this.ingredient_name = ingredient_name;
+        this.purchase_price = purchase_price;
+        this.quantity_measure = quantity_measure;
+        this.quantityAvailable = quantityAvailable;
     }
 
     public IngredientsInOffer(String ingredient_name) {

@@ -1,19 +1,17 @@
 package restaurantIOS.service;
 
-import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import restaurantIOS.models.*;
-import restaurantIOS.models.dto.AvailableOffers;
-import restaurantIOS.models.dto.IngredientsInOffer;
-import restaurantIOS.models.dto.Restaurant_offer_ingredientDTO;
+import restaurantIOS.models.dto.*;
 import restaurantIOS.repository.ImagesRepository;
 import restaurantIOS.repository.Restaurant_offerRepository;
 
+import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 
 @Service
@@ -39,13 +37,28 @@ public class Restaurant_offerService {
         return restaurant_offerRepository.findAllById(Collections.singleton(id));
     }
 
-
+    @Modifying
     @Transactional
-    public List<Restaurant_offer> save(Restaurant_offer restaurant_offer) {
-        restaurant_offerRepository.save(restaurant_offer);
-        return restaurant_offerRepository.findAll();
+    public Restaurant_offer save(RestaurantOfferRequest restaurantOfferRequest) throws SQLException {
 
+        Restaurant_offer restaurant_offer =
+                new Restaurant_offer(restaurantOfferRequest.getRestaurant_offer_name(),
+                restaurantOfferRequest.getRestaurant_offer_price(), restaurantOfferRequest.getOffer_type(),
+                restaurantOfferRequest.getId_image());
+
+        Restaurant_offer restaurantOfferNew = restaurant_offerRepository.save(restaurant_offer);
+
+        for (IngredientsInOfferDTO roiDTO: restaurantOfferRequest.getListIngredientsInOffer()             ) {
+
+            restaurant_offerRepository.connectOfferAndIngredients(restaurantOfferNew.getId(),
+                    roiDTO.getId_ingredient(), roiDTO.getQuantity());
+        }
+        return restaurant_offerRepository.save(restaurant_offer);
     }
+
+
+
+
 
     @Transactional
     public Optional<Restaurant_offer> getRestaurantOfferOnName(String restaurant_offer_name) {
@@ -209,8 +222,30 @@ public class Restaurant_offerService {
         return listImageOffers;
     }
 
+    @Modifying
+    @Transactional
+    public Restaurant_offer update(RestaurantOfferRequest restaurantOfferRequest) {
+
+        Restaurant_offer restaurant_offer =
+                new Restaurant_offer(restaurantOfferRequest.getId_restaurant_offer(), restaurantOfferRequest.getRestaurant_offer_name(),
+                        restaurantOfferRequest.getRestaurant_offer_price(), restaurantOfferRequest.getOffer_type(),
+                        restaurantOfferRequest.getId_image());
+
+        restaurant_offerRepository.deletePreviousData(restaurantOfferRequest.getId_restaurant_offer());
 
 
+
+        Restaurant_offer restaurantOfferNew = restaurant_offerRepository.save(restaurant_offer);
+
+        for (IngredientsInOfferDTO roiDTO: restaurantOfferRequest.getListIngredientsInOffer()             ) {
+
+            restaurant_offerRepository.connectOfferAndIngredients(restaurantOfferNew.getId(),
+                    roiDTO.getId_ingredient(), roiDTO.getQuantity());
+        }
+        return restaurant_offerRepository.save(restaurant_offer);
+
+
+    }
 }
 
 

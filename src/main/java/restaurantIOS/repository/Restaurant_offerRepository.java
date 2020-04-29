@@ -2,6 +2,8 @@ package restaurantIOS.repository;
 
 
 
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -33,21 +35,14 @@ public interface Restaurant_offerRepository extends JpaRepository<Restaurant_off
     List<List<String>> getIngredientsInOffer(int id_offer);
 
 
+    @Modifying
+    @Query(value = "INSERT INTO restaurant_offer_ingredients (id_restaurant_offer, id_ingredient, quantity) VALUES (?,?,?)",
+            nativeQuery = true)
+    void connectOfferAndIngredients(Integer id, Integer id_ingredient, double quantity);
 
+    @Modifying
+    @Query(value = "DELETE FROM restaurant_offer_ingredients WHERE id_restaurant_offer = ?",
+            nativeQuery = true)
+    void deletePreviousData(Integer id_restaurant_offer);
 }
 
-
-
-
-
-
-/*
-    @Query(
-            value = "select restaurant_offer.id_restaurant_offer, restaurant_offer.restaurant_offer_name,restaurant_offer.restaurant_offer_price, " +
-                    "restaurant_offer.offer_type, restaurant_offer.image, ingredients.ingredient_name, ingredients.purchase_price, ingredients.quantity_measure, " +
-                    "restaurant_offer_ingredients.quantity, avg.id_restaurant, avg.quantityAvailable from restaurant_offer_ingredients INNER JOIN " +
-                    "restaurant_offer ON restaurant_offer.id_restaurant_offer = restaurant_offer_ingredients.id_restaurant_offer INNER JOIN ingredients " +
-                    "on ingredients.id_ingredient = restaurant_offer_ingredients.id_ingredient INNER JOIN available_ingredients avg on avg.id_ingredients = " +
-                    "ingredients.id_ingredient INNER JOIN restaurants on restaurants.id_restaurant = avg.id_restaurant where avg.id_restaurant = ? and " +
-                    "avg.quantityAvailable>restaurant_offer_ingredients.quantity",
-            nativeQuery = true)*/

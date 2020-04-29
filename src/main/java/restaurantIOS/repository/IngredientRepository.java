@@ -19,25 +19,28 @@ public interface IngredientRepository extends JpaRepository<Ingredients,Integer>
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE available_ingredients SET quantityAvailable = ? WHERE id_restaurant = ? and" +
+    @Query(value = "UPDATE available_ingredients SET quantityAvailable = quantityAvailable + ? WHERE id_restaurant = ? and " +
             "id_ingredients = ?",
             nativeQuery = true)
-    void addAvailableIngredients(Double quantityAvailable, Integer id_restaurant, Integer id_ingredient);
-
+    void updateAvailableIngredients(Double quantityAvailable, Integer id_restaurant, Integer id_ingredient);
 
 
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO available_ingredients " +
-            "(id_restaurant, id_ingredients, quantityAvailable) VALUES (?, ?, ?)",
+            "(id_ingredients, id_restaurant, quantityAvailable) VALUES (?, ?, ?)",
             nativeQuery = true)
     void insertAvailableIngredients(int id_ingredient, Integer id_restaurant, Double quantityAvailable);
 
+    @Query(value = "select count(*) from available_ingredients WHERE id_restaurant = ? and id_ingredients = ?",
+            nativeQuery = true)
+    Integer checkIfExistInRestaurant(Integer id_restaurant, int id_ingredients);
 
+    @Query(value = "select count(*) from ingredients WHERE ingredient_name = ?",
+            nativeQuery = true)
+    Integer checkIngredientexistance(String ingredient_name);
 
-
-    @Query(value = "SELECT available_ingredients.quantityAvailable FROM `available_ingredients` WHERE " +
-            "available_ingredients.id_restaurant = ? and available_ingredients.id_ingredients = ?",
-    nativeQuery = true)
-    Integer checkIfExistInRestaurant(Integer id_ingredient, Integer id_restaurant);
+    @Query(value = "select id_ingredient from ingredients WHERE ingredient_name = ?",
+            nativeQuery = true)
+    Integer findByName(String ingredient_name);
 }

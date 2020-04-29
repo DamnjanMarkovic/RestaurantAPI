@@ -34,20 +34,20 @@ public class ImagesService {
     @Transactional
     public Integer saveSpecificImage(MultipartFile imageFile, Images images) throws Exception {
         savePhotoImage(imageFile, images);
-        save(images);
-//        System.out.println(photoDTO.getImagename());
-//        System.out.println(imageFile.getName());
-        List<Integer>listIDs = imagesRepository.getSpecificPhoto(images.getImagename());
-
-        return listIDs.get(0);
-
+        Integer id_image =0;
+         if (imagesRepository.checkImagetexistance(images.getImagename()) > 0) {
+            id_image = imagesRepository.returnImageIDBasedOnImageName(images.getImagename());
+        } else {
+            id_image = imagesRepository.save(images).getId_image();
+        }
+        return id_image;
     }
 
 
 
     public void savePhotoImage(MultipartFile imageFile, Images images) throws Exception {
-        Path currentPath = Paths.get("");
-        Path absolutePath = currentPath.toAbsolutePath();
+       // Path currentPath = Paths.get("");
+        //Path absolutePath = currentPath.toAbsolutePath();
         images.setImageLocation("src/main/java/restaurantIOS/images/" + images.getImagename());
 
         byte[] bytes = imageFile.getBytes();
@@ -57,6 +57,7 @@ public class ImagesService {
 
 
     public void save(Images images) {
+
         imagesRepository.save(images);
     }
 
