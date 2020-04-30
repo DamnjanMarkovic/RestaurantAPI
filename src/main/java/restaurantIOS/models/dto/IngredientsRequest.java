@@ -4,12 +4,12 @@ public class IngredientsRequest {
 
 
     private String ingredient_name;
-    private double purchase_price;
+    private Double purchase_price;
     private String quantity_measure;
     private Integer id_restaurant;
     private Double quantityUpdating;
 
-    public IngredientsRequest(String ingredient_name, double purchase_price, String quantity_measure, Integer id_restaurant, Double quantityUpdating) {
+    public IngredientsRequest(String ingredient_name, Double purchase_price, String quantity_measure, Integer id_restaurant, Double quantityUpdating) {
         this.ingredient_name = ingredient_name;
         this.purchase_price = purchase_price;
         this.quantity_measure = quantity_measure;
@@ -25,11 +25,11 @@ public class IngredientsRequest {
         this.ingredient_name = ingredient_name;
     }
 
-    public double getPurchase_price() {
+    public Double getPurchase_price() {
         return purchase_price;
     }
 
-    public void setPurchase_price(double purchase_price) {
+    public void setPurchase_price(Double purchase_price) {
         this.purchase_price = purchase_price;
     }
 

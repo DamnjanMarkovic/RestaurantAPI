@@ -38,10 +38,11 @@ public class IngredientController {
         return ingredientService.getAvailableIngredientsInRestaurant(id);
     }
 
-    @PostMapping(value = "/load")
-    public List<IngredientsInOffer>persist(@RequestBody IngredientsRequest ingredientsRequest){
+    @PostMapping("/save")
+    public String persist(@RequestBody IngredientsRequest ingredientsRequest){
+        System.out.println("print nesto");
         ingredientService.save(ingredientsRequest);
-        return ingredientService.getAll();
+        return "Order inserted";
     }
 
 
