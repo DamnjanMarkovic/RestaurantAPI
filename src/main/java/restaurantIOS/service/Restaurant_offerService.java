@@ -18,13 +18,14 @@ import java.util.*;
 public class Restaurant_offerService {
 
 
-    private ImagesRepository imagesRepository;
+    private final ImagesRepository imagesRepository;
+    private final Restaurant_offerRepository restaurant_offerRepository;
 
     public Restaurant_offerService(ImagesRepository imagesRepository, Restaurant_offerRepository restaurant_offerRepository) {
         this.imagesRepository = imagesRepository;
         this.restaurant_offerRepository = restaurant_offerRepository;
     }
-    private Restaurant_offerRepository restaurant_offerRepository;
+
 
     @Transactional
     public List<Restaurant_offer> getAll() {
@@ -39,24 +40,38 @@ public class Restaurant_offerService {
 
     @Modifying
     @Transactional
-    public Restaurant_offer save(RestaurantOfferRequest restaurantOfferRequest) throws SQLException {
+    public Restaurant_offer save(RestaurantOfferRequest restaurantOfferRequest, MessageOfferDTO messageOfferDTO) throws SQLException {
+
+        List<IngredientsInOfferDTO> listIngredientsInOffer = getIngredientList(messageOfferDTO.getSpecialMessage());
 
         Restaurant_offer restaurant_offer =
                 new Restaurant_offer(restaurantOfferRequest.getRestaurant_offer_name(),
-                restaurantOfferRequest.getRestaurant_offer_price(), restaurantOfferRequest.getOffer_type(),
-                restaurantOfferRequest.getId_image());
+                        restaurantOfferRequest.getRestaurant_offer_price(), restaurantOfferRequest.getOffer_type(),
+                        restaurantOfferRequest.getId_image());
 
         Restaurant_offer restaurantOfferNew = restaurant_offerRepository.save(restaurant_offer);
 
-        for (IngredientsInOfferDTO roiDTO: restaurantOfferRequest.getListIngredientsInOffer()             ) {
-
+        for (IngredientsInOfferDTO roiDTO: listIngredientsInOffer             ) {
             restaurant_offerRepository.connectOfferAndIngredients(restaurantOfferNew.getId(),
                     roiDTO.getId_ingredient(), roiDTO.getQuantity());
         }
-        return restaurant_offerRepository.save(restaurant_offer);
+        return restaurantOfferNew;
     }
 
 
+
+
+    public List<IngredientsInOfferDTO> getIngredientList(String message) {
+        IngredientsInOfferDTO ingr;
+        List<IngredientsInOfferDTO> listIngredientsInOffer = new ArrayList<>();
+        String[] tokens = message.split(";");
+        for (int i = 0; i <tokens.length ; i = i+2) {
+            ingr = new IngredientsInOfferDTO(Integer.parseInt(tokens[i]),
+                    Double.parseDouble(tokens[i+1]));
+            listIngredientsInOffer.add(ingr);
+        }
+        return listIngredientsInOffer;
+    }
 
 
 
@@ -111,7 +126,7 @@ public class Restaurant_offerService {
 
                                         //kreiraj artikal
                                         quantityAvailable = avg.getQuantityAvailable();
-                                         ingredientsInOffer1 =
+                                        ingredientsInOffer1 =
                                                 new IngredientsInOffer(ingre.getIngredient_name(), ingre.getPurchase_price(), ingre.getQuantity_measure(),
                                                         quantity, quantityAvailable);
                                     }
@@ -136,7 +151,7 @@ public class Restaurant_offerService {
                 availableOffers.add(availableOffersOne);
             }
         }
-            return availableOffers;
+        return availableOffers;
 
     }
 
@@ -146,10 +161,10 @@ public class Restaurant_offerService {
 
             if (ingredientsInOffers.get(i).getQuantityAvailable()>0 && ingredientsInOffers.get(i).getQuantityAvailable()
                     >= ingredientsInOffers.get(i).getQuantity()) {
-                    bool[i] = true;
+                bool[i] = true;
 
-                }
             }
+        }
 
         boolean value1 = checkBooleanValues(bool);
         return value1;
@@ -170,35 +185,35 @@ public class Restaurant_offerService {
     public List<AvailableOffers> getAllAvailableOffers() {
 
         List<Restaurant_offer> restOffs = restaurant_offerRepository.getAllAvailableOffers();
-            List<AvailableOffers> availableOffers = new ArrayList<>();
-            AvailableOffers availableOffersOne = null;
-            double quantity = 10;
-            for (Restaurant_offer offs : restOffs) {
-                Set<IngredientsInOffer> ingredientsInOffer = new HashSet<>();
-                for (Ingredients ingre : offs.getIngredients()) {
-                    IngredientsInOffer ingredientsInOffer1 = new IngredientsInOffer(ingre.getIngredient_name());
-                    for (Restaurant_offer_ingredients roi : ingre.getRestaurant_offer_ingredients()) {
-                        if (roi.getId_restaurant_offer() == offs.getId()) {
-                           quantity = roi.getQuantity();
-                            for (Restaurant rst : ingre.getRestaurants())
-                                      for (Available_ingredients avg : rst.getAvailable_ingredients()) {
-                                               if (avg.getId_ingredients() == ingre.getId_ingredient()) {
-                        ingredientsInOffer1 = new IngredientsInOffer(ingre.getIngredient_name(), ingre.getPurchase_price(), ingre.getQuantity_measure(),
-                                                            quantity, 0);
-                                        }
+        List<AvailableOffers> availableOffers = new ArrayList<>();
+        AvailableOffers availableOffersOne = null;
+        double quantity = 10;
+        for (Restaurant_offer offs : restOffs) {
+            Set<IngredientsInOffer> ingredientsInOffer = new HashSet<>();
+            for (Ingredients ingre : offs.getIngredients()) {
+                IngredientsInOffer ingredientsInOffer1 = new IngredientsInOffer(ingre.getIngredient_name());
+                for (Restaurant_offer_ingredients roi : ingre.getRestaurant_offer_ingredients()) {
+                    if (roi.getId_restaurant_offer() == offs.getId()) {
+                        quantity = roi.getQuantity();
+                        for (Restaurant rst : ingre.getRestaurants())
+                            for (Available_ingredients avg : rst.getAvailable_ingredients()) {
+                                if (avg.getId_ingredients() == ingre.getId_ingredient()) {
+                                    ingredientsInOffer1 = new IngredientsInOffer(ingre.getIngredient_name(), ingre.getPurchase_price(), ingre.getQuantity_measure(),
+                                            quantity, 0);
                                 }
-                        }
+                            }
                     }
-                    ingredientsInOffer.add(ingredientsInOffer1);
                 }
-                availableOffersOne = new AvailableOffers(offs.getId(), offs.getRestaurant_offer_name(),
-                        offs.getRestaurant_offer_price(), offs.getOffer_type(), offs.getId_image(), ingredientsInOffer);
-
-                List<IngredientsInOffer> list = new ArrayList<IngredientsInOffer>(availableOffersOne.getIngredientsInOffer());
-
-                    availableOffers.add(availableOffersOne);
+                ingredientsInOffer.add(ingredientsInOffer1);
             }
-            return availableOffers;
+            availableOffersOne = new AvailableOffers(offs.getId(), offs.getRestaurant_offer_name(),
+                    offs.getRestaurant_offer_price(), offs.getOffer_type(), offs.getId_image(), ingredientsInOffer);
+
+            List<IngredientsInOffer> list = new ArrayList<IngredientsInOffer>(availableOffersOne.getIngredientsInOffer());
+
+            availableOffers.add(availableOffersOne);
+        }
+        return availableOffers;
 
     }
     @Transactional
@@ -222,9 +237,11 @@ public class Restaurant_offerService {
         return listImageOffers;
     }
 
+
     @Modifying
     @Transactional
-    public Restaurant_offer update(RestaurantOfferRequest restaurantOfferRequest) {
+    public Restaurant_offer update(RestaurantOfferRequest restaurantOfferRequest, MessageOfferDTO messageOfferDTO) {
+        List<IngredientsInOfferDTO> listIngredientsInOffer = getIngredientList(messageOfferDTO.getSpecialMessage());
 
         Restaurant_offer restaurant_offer =
                 new Restaurant_offer(restaurantOfferRequest.getId_restaurant_offer(), restaurantOfferRequest.getRestaurant_offer_name(),
@@ -232,17 +249,16 @@ public class Restaurant_offerService {
                         restaurantOfferRequest.getId_image());
 
         restaurant_offerRepository.deletePreviousData(restaurantOfferRequest.getId_restaurant_offer());
+        restaurant_offerRepository.updateOffer(restaurantOfferRequest.getRestaurant_offer_name(),
+                restaurantOfferRequest.getRestaurant_offer_price(), restaurantOfferRequest.getOffer_type(),
+                restaurantOfferRequest.getId_image(), restaurantOfferRequest.getId_restaurant_offer());
 
+        for (IngredientsInOfferDTO roiDTO: listIngredientsInOffer             ) {
 
-
-        Restaurant_offer restaurantOfferNew = restaurant_offerRepository.save(restaurant_offer);
-
-        for (IngredientsInOfferDTO roiDTO: restaurantOfferRequest.getListIngredientsInOffer()             ) {
-
-            restaurant_offerRepository.connectOfferAndIngredients(restaurantOfferNew.getId(),
+            restaurant_offerRepository.connectOfferAndIngredients(restaurant_offer.getId(),
                     roiDTO.getId_ingredient(), roiDTO.getQuantity());
         }
-        return restaurant_offerRepository.save(restaurant_offer);
+        return restaurant_offer;
 
 
     }

@@ -44,5 +44,11 @@ public interface Restaurant_offerRepository extends JpaRepository<Restaurant_off
     @Query(value = "DELETE FROM restaurant_offer_ingredients WHERE id_restaurant_offer = ?",
             nativeQuery = true)
     void deletePreviousData(Integer id_restaurant_offer);
+
+    @Modifying
+    @Query(value = "UPDATE restaurant_offer SET restaurant_offer_name =?, " +
+            "restaurant_offer_price =?, offer_type=?, id_image =? WHERE id_restaurant_offer = ?",
+            nativeQuery = true)
+    void updateOffer(String restaurant_offer_name, Double restaurant_offer_price, String offer_type, Integer id_image, Integer id_restaurant_offer);
 }
 

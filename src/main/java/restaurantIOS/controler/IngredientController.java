@@ -27,6 +27,7 @@ public class IngredientController {
     public List<Ingredients> getIngredients(@PathVariable Integer id){
         return ingredientService.getIngredients(id);
     }
+
     @GetMapping(value = "/all")
     public List<IngredientsInOffer> getAll(){
         return ingredientService.getAll();

@@ -9,6 +9,7 @@ import restaurantIOS.models.*;
 import org.springframework.web.bind.annotation.*;
 import restaurantIOS.models.dto.AvailableOffers;
 import restaurantIOS.models.dto.IngredientsInOfferDTO;
+import restaurantIOS.models.dto.MessageOfferDTO;
 import restaurantIOS.models.dto.RestaurantOfferRequest;
 import restaurantIOS.service.ImagesService;
 import restaurantIOS.service.Restaurant_offerService;
@@ -78,57 +79,37 @@ public class Restaurant_offerController {
     }
     @PostMapping(value = "/load", consumes = {"multipart/form-data"})
     public Restaurant_offer saveNewOffer (@RequestParam("imageFile") @PathVariable MultipartFile imageFile,
-                                          RestaurantOfferRequest restaurantOfferRequest){
+                                          RestaurantOfferRequest restaurantOfferRequest,
+                                          MessageOfferDTO messageOfferDTO){
         Images images = new Images();
         images.setImagename(imageFile.getOriginalFilename());
         Restaurant_offer restaurant_offer = null;
         try {
             Integer id_image = imagesService.saveSpecificImage(imageFile, images);
             restaurantOfferRequest.setId_image(id_image);
-            /*
-            IngredientsInOfferDTO ingredientsInOfferDTO1 = new IngredientsInOfferDTO(18, 0.02);
-            IngredientsInOfferDTO ingredientsInOfferDTO2 = new IngredientsInOfferDTO(8, 0.04);
-            List<IngredientsInOfferDTO> listIngredientsInOffer = new ArrayList<>();
-            listIngredientsInOffer.add(ingredientsInOfferDTO1);
-            listIngredientsInOffer.add(ingredientsInOfferDTO2);
-            restaurantOfferRequest.setListIngredientsInOffer(listIngredientsInOffer);
-*/
-            restaurant_offer = restaurant_offerService.save(restaurantOfferRequest);
-        } catch (SQLException e) {
-            e.printStackTrace();
+            restaurant_offer = restaurant_offerService.save(restaurantOfferRequest, messageOfferDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return restaurant_offer;
     }
 
-    @PutMapping(value = "/load", consumes = {"multipart/form-data"})
+    @PutMapping(value = "/updateOffer", consumes = {"multipart/form-data"})
     public Restaurant_offer updateExistingOffer (@RequestParam("imageFile") @PathVariable MultipartFile imageFile,
-                                          RestaurantOfferRequest restaurantOfferRequest){
+                                                 RestaurantOfferRequest restaurantOfferRequest,
+                                                 MessageOfferDTO messageOfferDTO){
         Images images = new Images();
         images.setImagename(imageFile.getOriginalFilename());
         Restaurant_offer restaurant_offer = null;
         try {
             Integer id_image = imagesService.saveSpecificImage(imageFile, images);
             restaurantOfferRequest.setId_image(id_image);
-            /*
-            IngredientsInOfferDTO ingredientsInOfferDTO1 = new IngredientsInOfferDTO(18, 0.02);
-            IngredientsInOfferDTO ingredientsInOfferDTO2 = new IngredientsInOfferDTO(8, 0.04);
-            List<IngredientsInOfferDTO> listIngredientsInOffer = new ArrayList<>();
-            listIngredientsInOffer.add(ingredientsInOfferDTO1);
-            listIngredientsInOffer.add(ingredientsInOfferDTO2);
-            restaurantOfferRequest.setListIngredientsInOffer(listIngredientsInOffer);
-*/
-            restaurant_offer = restaurant_offerService.update(restaurantOfferRequest);
-        } catch (SQLException e) {
-            e.printStackTrace();
+            restaurant_offer = restaurant_offerService.update(restaurantOfferRequest, messageOfferDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return restaurant_offer;
     }
-
-
 
     @GetMapping("/availableOffers/{id}")
     public List<AvailableOffers> getAvailableOffersInRestaurant(@PathVariable Integer id){
