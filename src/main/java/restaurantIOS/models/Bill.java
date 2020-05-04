@@ -19,6 +19,9 @@ public class Bill {
     private Double total_amount;
     private Integer id_restaurant;
 
+
+
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "bill_orders", joinColumns = @JoinColumn(name = "id_bill"), inverseJoinColumns = @JoinColumn(name = "id_order"))
     private Set<Orders> orders;

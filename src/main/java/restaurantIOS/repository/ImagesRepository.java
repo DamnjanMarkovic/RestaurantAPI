@@ -26,9 +26,4 @@ public interface ImagesRepository extends JpaRepository<Images, Integer> {
             nativeQuery = true)
     Integer returnImageIDBasedOnImageName(String imagename);
 
-
-    /*
-    @Query("SELECT p.id_image from PhotoDTO p where p.imagename =(:stiglo)")
-    Integer getSpecificPhoto(String stiglo);
-*/
 }

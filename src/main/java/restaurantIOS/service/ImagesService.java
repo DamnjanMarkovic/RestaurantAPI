@@ -46,10 +46,7 @@ public class ImagesService {
 
 
     public void savePhotoImage(MultipartFile imageFile, Images images) throws Exception {
-       // Path currentPath = Paths.get("");
-        //Path absolutePath = currentPath.toAbsolutePath();
         images.setImageLocation("src/main/java/restaurantIOS/images/" + images.getImagename());
-
         byte[] bytes = imageFile.getBytes();
         Path path = Paths.get(images.getImageLocation());
         Files.write(path, bytes);

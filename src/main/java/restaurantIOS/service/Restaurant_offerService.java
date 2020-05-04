@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import restaurantIOS.models.*;
 import restaurantIOS.models.dto.*;
 import restaurantIOS.repository.ImagesRepository;
+import restaurantIOS.repository.IngredientRepository;
 import restaurantIOS.repository.Restaurant_offerRepository;
 
 import java.sql.SQLException;
@@ -20,12 +21,13 @@ public class Restaurant_offerService {
 
     private final ImagesRepository imagesRepository;
     private final Restaurant_offerRepository restaurant_offerRepository;
+    private final IngredientRepository ingredientRepository;
 
-    public Restaurant_offerService(ImagesRepository imagesRepository, Restaurant_offerRepository restaurant_offerRepository) {
+    public Restaurant_offerService(ImagesRepository imagesRepository, Restaurant_offerRepository restaurant_offerRepository, IngredientRepository ingredientRepository) {
         this.imagesRepository = imagesRepository;
         this.restaurant_offerRepository = restaurant_offerRepository;
+        this.ingredientRepository = ingredientRepository;
     }
-
 
     @Transactional
     public List<Restaurant_offer> getAll() {
@@ -38,6 +40,41 @@ public class Restaurant_offerService {
         return restaurant_offerRepository.findAllById(Collections.singleton(id));
     }
 
+
+    @Modifying
+    @Transactional
+    public Restaurant_offer saveOrUpdate(RestaurantOfferRequest restaurantOfferRequest, MessageOfferDTO messageOfferDTO) throws SQLException {
+        Restaurant_offer restaurant_offer;
+
+        List<IngredientsInOfferDTO> listIngredientsInOffer = getIngredientList(messageOfferDTO.getSpecialMessage());
+
+        if (restaurant_offerRepository.checkOfferexistance(restaurantOfferRequest.getRestaurant_offer_name()) > 0) {
+            Integer offerArrivedID = restaurant_offerRepository.findByName(restaurantOfferRequest.getRestaurant_offer_name());
+            restaurant_offer =
+                    new Restaurant_offer(offerArrivedID, restaurantOfferRequest.getRestaurant_offer_name(),
+                            restaurantOfferRequest.getRestaurant_offer_price(), restaurantOfferRequest.getOffer_type(),
+                            restaurantOfferRequest.getId_image());
+            restaurant_offerRepository.deletePreviousData(offerArrivedID);
+            restaurant_offerRepository.updateOffer(restaurantOfferRequest.getRestaurant_offer_name(),
+                    restaurantOfferRequest.getRestaurant_offer_price(), restaurantOfferRequest.getOffer_type(),
+                    restaurantOfferRequest.getId_image(), offerArrivedID);
+
+        } else {
+            Restaurant_offer restaurant_offerArrived =
+                    new Restaurant_offer(restaurantOfferRequest.getRestaurant_offer_name(),
+                            restaurantOfferRequest.getRestaurant_offer_price(), restaurantOfferRequest.getOffer_type(),
+                            restaurantOfferRequest.getId_image());
+
+            restaurant_offer = restaurant_offerRepository.save(restaurant_offerArrived);
+        }
+            for (IngredientsInOfferDTO roiDTO: listIngredientsInOffer             ) {
+                restaurant_offerRepository.connectOfferAndIngredients(restaurant_offer.getId(),
+                roiDTO.getId_ingredient(), roiDTO.getQuantity());
+            }
+
+
+        return restaurant_offer;
+    }
     @Modifying
     @Transactional
     public Restaurant_offer save(RestaurantOfferRequest restaurantOfferRequest, MessageOfferDTO messageOfferDTO) throws SQLException {
@@ -58,15 +95,43 @@ public class Restaurant_offerService {
         return restaurantOfferNew;
     }
 
+    @Modifying
+    @Transactional
+    public Restaurant_offer update(RestaurantOfferRequest restaurantOfferRequest, MessageOfferDTO messageOfferDTO) {
+        List<IngredientsInOfferDTO> listIngredientsInOffer = getIngredientList(messageOfferDTO.getSpecialMessage());
+
+        Restaurant_offer restaurant_offer =
+                new Restaurant_offer(restaurantOfferRequest.getId_restaurant_offer(), restaurantOfferRequest.getRestaurant_offer_name(),
+                        restaurantOfferRequest.getRestaurant_offer_price(), restaurantOfferRequest.getOffer_type(),
+                        restaurantOfferRequest.getId_image());
+
+        restaurant_offerRepository.deletePreviousData(restaurantOfferRequest.getId_restaurant_offer());
+        restaurant_offerRepository.updateOffer(restaurantOfferRequest.getRestaurant_offer_name(),
+                restaurantOfferRequest.getRestaurant_offer_price(), restaurantOfferRequest.getOffer_type(),
+                restaurantOfferRequest.getId_image(), restaurantOfferRequest.getId_restaurant_offer());
+
+        for (IngredientsInOfferDTO roiDTO: listIngredientsInOffer             ) {
+
+            restaurant_offerRepository.connectOfferAndIngredients(restaurant_offer.getId(),
+                    roiDTO.getId_ingredient(), roiDTO.getQuantity());
+        }
+        return restaurant_offer;
+
+
+    }
+
 
 
 
     public List<IngredientsInOfferDTO> getIngredientList(String message) {
         IngredientsInOfferDTO ingr;
         List<IngredientsInOfferDTO> listIngredientsInOffer = new ArrayList<>();
-        String[] tokens = message.split(";");
+        String finalMessage = message.substring(0, message.length()-1);
+
+        String[] tokens = finalMessage.split(";");
         for (int i = 0; i <tokens.length ; i = i+2) {
-            ingr = new IngredientsInOfferDTO(Integer.parseInt(tokens[i]),
+            Integer ingredientID = ingredientRepository.findByName(tokens[i]);
+            ingr = new IngredientsInOfferDTO(ingredientID,
                     Double.parseDouble(tokens[i+1]));
             listIngredientsInOffer.add(ingr);
         }
@@ -89,10 +154,8 @@ public class Restaurant_offerService {
     public List<AvailableOffers> getAvailableOffersInRestaurant(Integer id){
         List<Restaurant_offer> restOffs = restaurant_offerRepository.getAvailableOffersInRestaurant(id);
 
-        List<AvailableOffers> availableOffers = returnAvailableOffersInRestaurant(restOffs, id);
 
-
-        return availableOffers;
+        return returnAvailableOffersInRestaurant(restOffs, id);
 
 
     }
@@ -102,30 +165,19 @@ public class Restaurant_offerService {
         AvailableOffers availableOffersOne = null;
         double quantityAvailable = 0;
         double quantity = 0;
-        //IngredientsInOffer ingredientsInOffer1 = null;
-        //prodji kroz sve ponude pristigle iz baze
         for (Restaurant_offer offs : restOffs) {
-            //kreiraj novi set artikala za tu ponudu i prodji kroz artikle svake ponude
             Set<IngredientsInOffer> ingredientsInOffer = new HashSet<>();
 
             for (Ingredients ingre : offs.getIngredients()) {
                 IngredientsInOffer ingredientsInOffer1 = new IngredientsInOffer(ingre.getIngredient_name());
-                //za svaki artikal nadji kolicinu koja ide u ponudu (jer se kolicina nalazi u tabeli koja spaja ponude i artikle)
-                for (Restaurant_offer_ingredients roi : ingre.getRestaurant_offer_ingredients()) {
-                    //preciziraj da se ta kolicina artikla odnosi upravo na tu ponudu
-                    if (roi.getId_restaurant_offer() == offs.getId()) {
-                        //prodji kroz sve restorane
-                        quantity = roi.getQuantity();
+                    for (Restaurant_offer_ingredients roi : ingre.getRestaurant_offer_ingredients()) {
+                     if (roi.getId_restaurant_offer() == offs.getId()) {
+                         quantity = roi.getQuantity();
                         for (Restaurant rst : ingre.getRestaurants())
-                            //preciziraj da se odnosi samo na konkretan restoran za koji je stigao upit
-                            if (rst.getId_restaurant() == id) {
-                                //prodji kroz sve raspolozive artikle vezane (jer se raspoloziva kolicina nalazi u tabeli koja spaja artikle i restoran)
-                                for (Available_ingredients avg : rst.getAvailable_ingredients()) {
-                                    //preciziraj da se kolicina odnosi upravo na taj artikal (u prethodno preciziranom restoranu)
-                                    if (avg.getId_ingredients() == ingre.getId_ingredient()) {
-
-                                        //kreiraj artikal
-                                        quantityAvailable = avg.getQuantityAvailable();
+                             if (rst.getId_restaurant() == id) {
+                                 for (Available_ingredients avg : rst.getAvailable_ingredients()) {
+                                     if (avg.getId_ingredients() == ingre.getId_ingredient()) {
+                                      quantityAvailable = avg.getQuantityAvailable();
                                         ingredientsInOffer1 =
                                                 new IngredientsInOffer(ingre.getIngredient_name(), ingre.getPurchase_price(), ingre.getQuantity_measure(),
                                                         quantity, quantityAvailable);
@@ -134,13 +186,8 @@ public class Restaurant_offerService {
                             }
                     }
                 }
-
-                //ubaci artikal u set
                 ingredientsInOffer.add(ingredientsInOffer1);
-
-
-
-            }
+              }
             availableOffersOne = new AvailableOffers(offs.getId(), offs.getRestaurant_offer_name(),
                     offs.getRestaurant_offer_price(), offs.getOffer_type(), offs.getId_image(), ingredientsInOffer);
 
@@ -187,7 +234,7 @@ public class Restaurant_offerService {
         List<Restaurant_offer> restOffs = restaurant_offerRepository.getAllAvailableOffers();
         List<AvailableOffers> availableOffers = new ArrayList<>();
         AvailableOffers availableOffersOne = null;
-        double quantity = 10;
+        double quantity = 0.0;
         for (Restaurant_offer offs : restOffs) {
             Set<IngredientsInOffer> ingredientsInOffer = new HashSet<>();
             for (Ingredients ingre : offs.getIngredients()) {
@@ -199,7 +246,7 @@ public class Restaurant_offerService {
                             for (Available_ingredients avg : rst.getAvailable_ingredients()) {
                                 if (avg.getId_ingredients() == ingre.getId_ingredient()) {
                                     ingredientsInOffer1 = new IngredientsInOffer(ingre.getIngredient_name(), ingre.getPurchase_price(), ingre.getQuantity_measure(),
-                                            quantity, 0);
+                                            quantity, 0.0);
                                 }
                             }
                     }
@@ -236,79 +283,4 @@ public class Restaurant_offerService {
         }
         return listImageOffers;
     }
-
-
-    @Modifying
-    @Transactional
-    public Restaurant_offer update(RestaurantOfferRequest restaurantOfferRequest, MessageOfferDTO messageOfferDTO) {
-        List<IngredientsInOfferDTO> listIngredientsInOffer = getIngredientList(messageOfferDTO.getSpecialMessage());
-
-        Restaurant_offer restaurant_offer =
-                new Restaurant_offer(restaurantOfferRequest.getId_restaurant_offer(), restaurantOfferRequest.getRestaurant_offer_name(),
-                        restaurantOfferRequest.getRestaurant_offer_price(), restaurantOfferRequest.getOffer_type(),
-                        restaurantOfferRequest.getId_image());
-
-        restaurant_offerRepository.deletePreviousData(restaurantOfferRequest.getId_restaurant_offer());
-        restaurant_offerRepository.updateOffer(restaurantOfferRequest.getRestaurant_offer_name(),
-                restaurantOfferRequest.getRestaurant_offer_price(), restaurantOfferRequest.getOffer_type(),
-                restaurantOfferRequest.getId_image(), restaurantOfferRequest.getId_restaurant_offer());
-
-        for (IngredientsInOfferDTO roiDTO: listIngredientsInOffer             ) {
-
-            restaurant_offerRepository.connectOfferAndIngredients(restaurant_offer.getId(),
-                    roiDTO.getId_ingredient(), roiDTO.getQuantity());
-        }
-        return restaurant_offer;
-
-
-    }
 }
-
-
-
-/*
-// OVAKO VRACA SVE STO IMA U RESTORANU BEZ OBZIRA DA LI JE TO DOVOLJNO ILI NE
-
- public List<AvailableOffers> getAvailableOffersInRestaurant(@PathVariable Integer id){
-        List<AvailableOffers> availableOffers = new ArrayList<>();
-        AvailableOffers availableOffersOne = null;
-        List<Restaurant_offer> restOffs = restaurant_offerRepository.getAvailableOffersInRestaurant(id);
-        //prodji kroz sve ponude pristigle iz baze
-        for (Restaurant_offer offs : restOffs) {
-            //kreiraj novi set artikala za tu ponudu i prodji kroz artikle svake ponude
-            Set<IngredientsInOffer>ingredientsInOffer = new HashSet<>();
-            for (Ingredients ingre : offs.getIngredients()) {
-                //za svaki artikal nadji kolicinu koja ide u ponudu (jer se kolicina nalazi u tabeli koja spaja ponude i artikle)
-                for (Restaurant_offer_ingredients roi: ingre.getRestaurant_offer_ingredients()                         ) {
-                    //preciziraj da se ta kolicina artikla odnosi upravo na tu ponudu
-                    if (roi.getId_restaurant_offer() == offs.getId()) {
-                        //prodji kroz sve restorane
-                        for (Restaurant rst: ingre.getRestaurants())
-                            //preciziraj da se odnosi samo na konkretan restoran za koji je stigao upit
-                                if (rst.getId_restaurant() == id){
-                                //prodji kroz sve raspolozive artikle vezane (jer se raspoloziva kolicina nalazi u tabeli koja spaja artikle i restoran)
-                                for (Available_ingredients avg: rst.getAvailable_ingredients()) {
-                                    //preciziraj da se kolicina odnosi upravo na taj artikal (u prethodno preciziranom restoranu)
-                                    if (avg.getId_ingredients() == ingre.getId_ingredient()) {
-
-                                            //kreiraj artikal
-                                            IngredientsInOffer ingredientsInOffer1 =
-                                                    new IngredientsInOffer(ingre.getIngredient_name(), ingre.getPurchase_price(), ingre.getQuantity_measure(),
-                                                            roi.getQuantity(), avg.getQuantityAvailable());
-                                            //ubaci artikal u set
-                                            ingredientsInOffer.add(ingredientsInOffer1);
-
-                                    }
-                                }
-                        }
-                    }
-                }
-            }
-            availableOffersOne = new AvailableOffers(offs.getId(), offs.getRestaurant_offer_name(),
-                    offs.getRestaurant_offer_price(), offs.getOffer_type(), offs.getImage(), ingredientsInOffer);
-            availableOffers.add(availableOffersOne);
-        }
-
-        return availableOffers;
-                }
- */

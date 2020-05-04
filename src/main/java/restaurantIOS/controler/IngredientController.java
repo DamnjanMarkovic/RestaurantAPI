@@ -48,17 +48,3 @@ public class IngredientController {
 
 
 }
-
-
-/*
-    @PostMapping(value = "/load")
-    public List<Ingredients>persist(@RequestParam("id_restaurant") @PathVariable Integer id_restaurant,
-                                    @RequestParam("quantityUpdating") @PathVariable Double quantityUpdating,
-                                    @RequestBody Ingredients ingredients){
-        System.out.println("nesto");
-        ingredientService.save(ingredients, id_restaurant, quantityUpdating);
-        return ingredientService.getAll();
-
-
-    }
- */

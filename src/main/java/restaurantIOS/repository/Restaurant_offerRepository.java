@@ -50,5 +50,13 @@ public interface Restaurant_offerRepository extends JpaRepository<Restaurant_off
             "restaurant_offer_price =?, offer_type=?, id_image =? WHERE id_restaurant_offer = ?",
             nativeQuery = true)
     void updateOffer(String restaurant_offer_name, Double restaurant_offer_price, String offer_type, Integer id_image, Integer id_restaurant_offer);
+
+    @Query(value = "select count(*) from restaurant_offer WHERE restaurant_offer_name = ?",
+            nativeQuery = true)
+    Integer checkOfferexistance(String restaurant_offer_name);
+
+    @Query(value = "select id_restaurant_offer from restaurant_offer WHERE restaurant_offer_name = ?",
+            nativeQuery = true)
+    Integer findByName(String restaurant_offer_name);
 }
 

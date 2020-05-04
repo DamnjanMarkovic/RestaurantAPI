@@ -29,16 +29,4 @@ public interface OrdersRespository extends JpaRepository<Orders, Integer> {
     void reduceIngredientsInOffer(double value, Integer id_restaurant, Integer id_ingredients);
 
 
-
-
-
 }
-/*
-UPDATE available_ingredients SET available_ingredients.quantityAvailable = available_ingredients.quantityAvailable - ? * ?
-WHERE available_ingredients.id_restaurant = ? AND available_ingredients.id_ingredients = ?
-
-
-
-
-SELECT order_offers.id_offer, order_offers.quantity, order_offers.id_table, order_offers.id_restaurant FROM order_offers WHERE (order_offers.id_bill is null or order_offers.id_bill = 0) and order_offers.id_table = ?
- */

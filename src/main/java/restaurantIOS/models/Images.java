@@ -7,9 +7,6 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="images")
-/*
-@NamedQuery(name = "PhotoDTO.getSpecificPhoto",
-		query = "SELECT p.id_image from PhotoDTO p where p.imagename = ?1")*/
 
 public class Images implements Serializable {
 	@Id

@@ -77,17 +77,18 @@ public class Restaurant_offerController {
         return restaurant_offerService.getRestaurantOfferOnName(restaurant_offer_name);
 
     }
-    @PostMapping(value = "/load", consumes = {"multipart/form-data"})
-    public Restaurant_offer saveNewOffer (@RequestParam("imageFile") @PathVariable MultipartFile imageFile,
+    @PostMapping(value = "/saveOrUpdate", consumes = {"multipart/form-data"})
+    public Restaurant_offer saveOrUpdateNewOffer (@RequestParam("imageFile") @PathVariable MultipartFile imageFile,
                                           RestaurantOfferRequest restaurantOfferRequest,
                                           MessageOfferDTO messageOfferDTO){
+
         Images images = new Images();
         images.setImagename(imageFile.getOriginalFilename());
         Restaurant_offer restaurant_offer = null;
         try {
             Integer id_image = imagesService.saveSpecificImage(imageFile, images);
             restaurantOfferRequest.setId_image(id_image);
-            restaurant_offer = restaurant_offerService.save(restaurantOfferRequest, messageOfferDTO);
+            restaurant_offer = restaurant_offerService.saveOrUpdate(restaurantOfferRequest, messageOfferDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }

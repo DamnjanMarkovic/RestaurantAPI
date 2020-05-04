@@ -18,7 +18,6 @@ public class Restaurant {
         private Integer id_image;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    //@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_restaurant")
     private Set<Available_ingredients> available_ingredients;
 
@@ -29,6 +28,13 @@ public class Restaurant {
     public Restaurant() {
     }
 
+    public Restaurant(String name_restaurant, String street, Integer number, String city, Integer id_image) {
+        this.name_restaurant = name_restaurant;
+        this.street = street;
+        this.number = number;
+        this.city = city;
+        this.id_image = id_image;
+    }
 
     public Set<Available_ingredients> getAvailable_ingredients() {
         return available_ingredients;

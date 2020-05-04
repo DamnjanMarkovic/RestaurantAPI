@@ -62,10 +62,10 @@ public class IngredientService {
     @Transactional
     public List<IngredientsInOffer> getAvailableIngredientsInRestaurant(Integer id){
         //return ingredientRepository.getAvailableIngredientsInRestaurant(id);
-        return prepareListIngredients(ingredientRepository.getAvailableIngredientsInRestaurant(id));
+        return prepareListIngredients(ingredientRepository.getAvailableIngredientsInRestaurant(id), id);
     }
 
-    private List<IngredientsInOffer> prepareListIngredients(List<Ingredients> availableIngredientsInRestaurant) {
+    private List<IngredientsInOffer> prepareListIngredients(List<Ingredients> availableIngredientsInRestaurant, Integer id) {
     IngredientsInOffer finalIngred = null;
     List<IngredientsInOffer> listFinal = new ArrayList<>();
 
@@ -73,7 +73,7 @@ public class IngredientService {
             for (Restaurant rest: ingr.getRestaurants()                 ) {
                 for (Available_ingredients ava: rest.getAvailable_ingredients()                     ) {
                    if(ingr.getId_ingredient()==ava.getId_ingredients() &&
-                   rest.getId_restaurant() == ava.getId_restaurant()) {
+                   rest.getId_restaurant() == ava.getId_restaurant() && rest.getId_restaurant() == id) {
 
                        finalIngred = new IngredientsInOffer(ingr.getIngredient_name(),
                                ingr.getPurchase_price(), ingr.getQuantity_measure(),
@@ -114,10 +114,4 @@ public class IngredientService {
     }
 }
 
-/*
-    @Transactional
-    public List<Ingredients> getAvailableIngredientsInRestaurant(Integer id){
-        return ingredientRepository.getAvailableIngredientsInRestaurant(id);
-    }
- */
 

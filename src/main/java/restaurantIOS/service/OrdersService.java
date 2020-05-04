@@ -33,7 +33,6 @@ public class OrdersService {
             ordersRespository.save(ord);
             reduceIngredientsOnOrder(ord);
 
-
         }
         result = "Order inserted in the DB";
         return result;

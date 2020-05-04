@@ -3,7 +3,6 @@ package restaurantIOS.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import restaurantIOS.models.Bill;
-import restaurantIOS.models.DinningTable;
 import restaurantIOS.models.Orders;
 import restaurantIOS.models.Restaurant_offer;
 import restaurantIOS.repository.BillRepository;
@@ -40,12 +39,6 @@ public class BillService {
         insertOrdersForBill(billReturned, billArrived);
         return billReturned;
     }
-
-
-
-
-
-
     @Transactional
     public List<Bill> getAll(){
         return billRepository.findAll();

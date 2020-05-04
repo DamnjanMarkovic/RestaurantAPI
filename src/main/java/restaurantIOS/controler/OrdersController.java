@@ -38,9 +38,4 @@ public class OrdersController {
         return ordersService.getOpenOrders(id_dinningTable);
     }
 
-
-
-
-
-
 }

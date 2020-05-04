@@ -67,15 +67,6 @@ public class LoginResponse implements Serializable {
         this.id_image = id_image;
     }
 
-/*
-    public List<GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(List<GrantedAuthority> authorities) {
-        this.authorities = authorities;
-    }*/
-
     public String getUserName() {
         return userName;
     }

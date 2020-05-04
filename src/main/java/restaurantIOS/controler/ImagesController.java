@@ -58,7 +58,6 @@ public class ImagesController {
 
 
     @RequestMapping(value ="/uploadImage", method = RequestMethod.POST)
-//   public String uploadImage(@PathVariable MultipartFile imageFile) throws Exception {
 
         public String uploadImage(@RequestParam("imageFile") @PathVariable MultipartFile imageFile) throws Exception {
         String returnValue = "Image uploaded!";
