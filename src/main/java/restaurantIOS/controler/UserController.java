@@ -54,6 +54,14 @@ public class UserController {
 		return userService.getUser(id);
 	}
 
+	@DeleteMapping("/deleteUser/{id_user}")
+	public void deleteUser (@PathVariable Integer id_user) throws Exception {
+
+		userService.deleteUser(id_user);
+
+	}
+
+
 	@RequestMapping(value = "/getUserImageAsZipInFolder/{id}", produces="application/zip")
 		public ResponseEntity<StreamingResponseBody> getUserImageAsZipInFolder(@PathVariable Integer id) {
 			return ResponseEntity
@@ -123,6 +131,7 @@ public class UserController {
 							UserRequest userRequest){
 		String result = null;
 		String response = null;
+		System.out.println("nesto");
 		Images images = new Images();
 		images.setImagename(imageFile.getOriginalFilename());
 		try {

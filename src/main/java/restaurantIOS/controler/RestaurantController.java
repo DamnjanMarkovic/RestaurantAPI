@@ -38,8 +38,6 @@ public class RestaurantController {
 
     }
 
-
-
     @GetMapping("/{id}")
     public Optional<Restaurant> getRestaurant(@PathVariable Integer id) throws Exception {
         try {
@@ -50,6 +48,14 @@ public class RestaurantController {
         }
 
     }
+
+    @DeleteMapping("/deleteRestaurant/{id_restaurant}")
+    public void deleteRestaurant (@PathVariable Integer id_restaurant) throws Exception {
+
+        restaurantService.deleteRestaurant(id_restaurant);
+
+    }
+
 
     @PostMapping(value = "/loadRestaurant", consumes = {"multipart/form-data"})
     public String saveUser (@RequestParam("imageFile") @PathVariable MultipartFile imageFile,

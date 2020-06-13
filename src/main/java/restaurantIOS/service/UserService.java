@@ -34,6 +34,15 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
+    public void deleteUser(Integer id)  {
+
+        userRepository.deleteUser_Roles(id);
+        userRepository.deleteUser_Restaurant(id);
+        userRepository.deleteById(id);
+
+    }
+
+    @Transactional
     public UserDetails loadUserByUsername(String userName) {
         Optional<User> user = userRepository.findByUserName(userName);
         try {

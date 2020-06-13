@@ -21,6 +21,21 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Integer getSpecificUser(String userFirstName);
 
     @Modifying
+    @Query(value = "DELETE FROM user_restaurant WHERE id_user = ?",
+            nativeQuery = true)
+    void deleteUser_Roles(int id_user);
+
+    @Modifying
+    @Query(value = "DELETE FROM user_roles WHERE id_user = ?",
+            nativeQuery = true)
+    void deleteUser_Restaurant(int id_user);
+
+
+
+
+
+
+    @Modifying
     @Transactional
     @Query(value = "INSERT INTO user_restaurant (id_restaurant, id_user) " +
                     "VALUES (?, ?)", nativeQuery = true)

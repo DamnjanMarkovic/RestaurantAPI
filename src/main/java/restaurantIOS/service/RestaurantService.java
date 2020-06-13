@@ -6,11 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import restaurantIOS.models.Restaurant;
-import restaurantIOS.models.User;
-import restaurantIOS.models.dto.UserRequest;
 import restaurantIOS.repository.RestaurantRepository;
 
-import javax.persistence.EntityNotFoundException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -36,11 +33,24 @@ public class RestaurantService {
             return restaurantRepository.findById((id));
 
     }
+    @Transactional
+    public void deleteRestaurant(Integer id)  {
+
+        restaurantRepository.deleteAvailableIngredientsInRestaurant(id);
+
+        restaurantRepository.deleteById(id);
+
+    }
 
     @Transactional
     public String save(Restaurant restaurant) throws SQLException {
         String result = null;
-        restaurantRepository.save(restaurant);
+        Restaurant restaurant1 = restaurantRepository.save(restaurant);
+
+        for (int i = 1; i <10 ; i++) {
+            restaurantRepository.insertDinningTables(i, restaurant1.getId_restaurant(), 6);
+        }
+
         result = "Restaurant inserted in the DB";
         return result;
     }
